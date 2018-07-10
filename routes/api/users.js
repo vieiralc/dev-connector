@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../../models/User')
 
 // @router  GET api/users/test
-// @dsc     Testes users route
+// @dsc     Tests users route
 // @access  Public 
 router.get('/test', (req, res) => res.json({msg: "Users Works"}))
 
