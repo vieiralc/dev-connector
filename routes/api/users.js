@@ -2,12 +2,15 @@ const express = require('express')
 const router = express.Router()
 const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
+const jwt = require ('jsonwebtoken')
+const keys = require('../../config/keys')
+const passport = require('passport')
 
 // Load User modal
 const User = require('../../models/User')
 
 // @router  GET api/users/test
-// @dsc     Testes users route
+// @dsc     Tests users route
 // @access  Public 
 router.get('/test', (req, res) => res.json({msg: "Users Works"}))
 
@@ -46,5 +49,52 @@ router.post('/register', (req, res) => {
             }
         })
 })
+
+// @router  POST api/users/login
+// @dsc     Login User / returns JWT Token
+// @access  Public
+router.post('/login', (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+
+    // Find User by email
+    User.findOne({ email })
+        .then(user => {
+            // Check for user
+            if (!user) 
+                return res.status(404).json({email: 'User not found'})
+
+            // Check password
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    if (isMatch) {
+                        // Create jwt payload
+                        const payload = { id: user.id, name: user.name, avatar: user.avatar }                    
+
+                        // Sign Token
+                        jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+                            res.json({
+                                success: true,
+                                token: 'Bearer ' + token
+                            })
+                        })
+                    } else
+                        return res.status(400).json({password: 'Password incorrect'})
+                })
+        })
+})
+
+
+
+// Example of private route
+// @router  GET api/users/current
+// @dsc     Return current user
+// @access  Private
+// router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+//     res.json({
+//         id: req.user.id,
+//         name: req.user.name
+//     })
+// })
 
 module.exports = router
