@@ -43,7 +43,7 @@ router.get('/handle/:handle', (req, res) => {
         .then(profile => {
             if (!profile) {
                 errors.noprofile = 'There is no profile for this user'
-                res.status(404).json(errors)
+                return res.status(404).json(errors)
             }
 
             res.json(profile)
@@ -62,7 +62,7 @@ router.get('/user/:user_id', (req, res) => {
         .then(profile => {
             if (!profile) {
                 errors.noprofile = 'There is no profile for this user'
-                res.status(404).json(errors)
+                return res.status(404).json(errors)
             }
 
             res.json(profile)
@@ -81,7 +81,7 @@ router.get('/all', (req, res) => {
     .then(profiles => {
         if (!profiles) {
             errors.noprofile = 'There are no profiles'
-            res.status(404).json(errors)
+            return res.status(404).json(errors)
         }
 
         res.json(profiles)
@@ -136,7 +136,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                     .then(profile => {
                         if (profile) {
                             errors.handle = 'That handle already exists'
-                            res.status(400).json(errors)
+                            return res.status(400).json(errors)
                         }
 
                         // Save Profile
@@ -158,23 +158,23 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
     if (!isValid) return res.status(400).json(errors)
     
     Profile.findOne({ user: req.user.id })
-    .then(profile => {
-        const newExp = {
-            title: req.body.title,
-            company: req.body.company,
-            location: req.body.location,
-            from: req.body.from,
-            to: req.body.to,
-            current: req.body.current,
-            description: req.body.description
-        }
+        .then(profile => {
+            const newExp = {
+                title: req.body.title,
+                company: req.body.company,
+                location: req.body.location,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description
+            }
 
-        // Add to exp array
-        profile.experience.unshift(newExp)
-        
-        profile.save().then(profile => res.json(profile))
-    })
-    .catch(err => res.status(404).json(err))
+            // Add to exp array
+            profile.experience.unshift(newExp)
+            
+            profile.save().then(profile => res.json(profile))
+        })
+        .catch(err => res.status(404).json(err))
 })
 
 
@@ -188,23 +188,23 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
     if (!isValid) return res.status(400).json(errors)
     
     Profile.findOne({ user: req.user.id })
-    .then(profile => {
-        const newEdu = {
-            school: req.body.school,
-            degree: req.body.degree,
-            fieldofstudy: req.body.fieldofstudy,
-            from: req.body.from,
-            to: req.body.to,
-            current: req.body.current,
-            description: req.body.description
-        }
+        .then(profile => {
+            const newEdu = {
+                school: req.body.school,
+                degree: req.body.degree,
+                fieldofstudy: req.body.fieldofstudy,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description
+            }
 
-        // Add to exp array
-        profile.education.unshift(newEdu)
-        
-        profile.save().then(profile => res.json(profile))
-    })
-    .catch(err => res.status(404).json(err))
+            // Add to exp array
+            profile.education.unshift(newEdu)
+            
+            profile.save().then(profile => res.json(profile))
+        })
+        .catch(err => res.status(404).json(err))
 })
 
 // @router  DELETE api/profile/experience/:exp_id
