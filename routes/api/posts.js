@@ -74,20 +74,17 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, re
 // @access Private
 router.post('/like/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
     
-    Profile.findOne({user: req.user.id})
-        .then(profile => {
-            Post.findById(req.params.id)
-                .then(post => {
-                    if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0)
-                        return res.status(400).json({ alreadyliked: 'User already liked this post'})
+    Post.findById(req.params.id)
+        .then(post => {
+            if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0)
+                return res.status(400).json({ alreadyliked: 'User already liked this post'})
 
-                    // Add user id to likes array
-                    post.likes.unshift({ user: req.user.id })
-                    
-                    post.save().then(post => res.json(post))
-                })
-                .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
+            // Add user id to likes array
+            post.likes.unshift({ user: req.user.id })
+            
+            post.save().then(post => res.json(post))
         })
+        .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
 })
 
 // @route  POST api/posts/unlike/:id
