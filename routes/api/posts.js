@@ -92,25 +92,22 @@ router.post('/like/:id', passport.authenticate('jwt', { session: false }), (req,
 // @access Private
 router.post('/unlike/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
     
-    Profile.findOne({user: req.user.id})
-        .then(profile => {
-            Post.findById(req.params.id)
-                .then(post => {
-                    if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0)
-                        return res.status(400).json({ notliked: 'You have not yet liked this post'})
+    Post.findById(req.params.id)
+        .then(post => {
+            if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0)
+                return res.status(400).json({ notliked: 'You have not yet liked this post'})
 
-                    // Get the remove index
-                    const removeIndex = post.likes
-                        .map(item => item.user.toString())
-                        .indexOf(req.user.id)
+            // Get the remove index
+            const removeIndex = post.likes
+                .map(item => item.user.toString())
+                .indexOf(req.user.id)
 
-                    // Splice out of array
-                    post.likes.splice(removeIndex, 1)
+            // Splice out of array
+            post.likes.splice(removeIndex, 1)
 
-                    post.save().then(post => res.json(post))
-                })
-                .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
+            post.save().then(post => res.json(post))
         })
+        .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
 })
 
 // @route  POST api/posts/comment/:id
