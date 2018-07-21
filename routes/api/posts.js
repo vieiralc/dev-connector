@@ -1,13 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const passport = require('passport')
 
 // Load Post Model
 const Post = require('../../models/Post')
-
-// Load Profile Model
-const Profile = require('../../models/Profile')
 
 // Load post validation
 const validatePostInput = require('../../validation/post')
@@ -132,7 +128,7 @@ router.post('/comment/:id', passport.authenticate('jwt', { session: false }), (r
 
             post.save().then(post => res.json(post))
         })
-        .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
+        .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
 })
 
 // @route  DELETE api/posts/comment/:id/:comment_id
@@ -156,8 +152,7 @@ router.delete('/comment/:id/:comment_id', passport.authenticate('jwt', { session
 
             post.save().then(post => res.json(post))
         })
-        .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
-
+        .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
 })
 
 module.exports = router
