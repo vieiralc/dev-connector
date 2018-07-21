@@ -1,3 +1,3 @@
 # devConnector
 
-## Social network for developers
+Social network for developers
