@@ -119,7 +119,7 @@ router.post('/comment/:id', passport.authenticate('jwt', { session: false }), (r
     // Check validation
     if (!isValid) return res.status(400).json(errors)
 
-            Post.findById(req.params.id)
+    Post.findById(req.params.id)
         .then(post => {
             const newComment = {
                 text: req.body.text,
@@ -133,7 +133,6 @@ router.post('/comment/:id', passport.authenticate('jwt', { session: false }), (r
             post.save().then(post => res.json(post))
         })
         .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
-
 })
 
 // @route  DELETE api/posts/comment/:id/:comment_id
