@@ -86,7 +86,7 @@ Login.propTypes = {
     errors: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     auth: state.auth,
     errors: state.errors
 })
