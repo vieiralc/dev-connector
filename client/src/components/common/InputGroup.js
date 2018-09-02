@@ -46,4 +46,4 @@ InputGroup.defaultProps = {
     type: 'text'
 }
 
-export default InputdGroup
+export default InputGroup
