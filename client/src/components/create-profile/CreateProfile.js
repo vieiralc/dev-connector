@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
+import {createProfile} from '../../actions/profileActions'
 
 import InputGroup         from '../common/InputGroup'
 import SelectListGroup    from '../common/SelectListGroup'
@@ -33,13 +35,35 @@ class CreateProfile extends Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors)
+            this.setState({errors: nextProps.errors})
+    }
+
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value })
     }
 
     onSubmit(e) {
         e.preventDefault()
-        console.log('submit')
+        
+        const profileData = {
+            handle:         this.state.handle,
+            company:        this.state.company,
+            website:        this.state.website,
+            location:       this.state.location,
+            status:         this.state.status,
+            skills:         this.state.skills,
+            githubusername: this.state.githubusername,
+            bio:            this.state.bio,
+            twitter:        this.state.twitter,
+            facebook:       this.state.facebook,
+            linkedin:       this.state.linkedin,
+            youtube:        this.state.youtube,
+            instagram:      this.state.instagram
+        }
+        
+        this.props.createProfile(profileData, this.props.history)
     }
 
     render() {
@@ -198,12 +222,15 @@ class CreateProfile extends Component {
                                 />
 
                                 <div className="mb-3">
-                                    <button onClick={() => 
-                                        this.setState({
-                                            displaySocialInputs: !this.state.displaySocialInputs
-                                        })
-                                    } className="btn btn-light">
-                                        Add Social Network Links
+                                    <button 
+                                        type="button"
+                                        onClick={() => 
+                                            this.setState({
+                                                displaySocialInputs: !this.state.displaySocialInputs
+                                            })
+                                        } 
+                                        className="btn btn-light">
+                                            Add Social Network Links
                                     </button> &nbsp;
                                     <span className="text text-muted">Optional</span>
                                 </div>
@@ -228,4 +255,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 })
 
-export default  connect(mapStateToProps)(CreateProfile)
+export default  connect(mapStateToProps, { createProfile })(withRouter(CreateProfile))
