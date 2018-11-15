@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { createProfile, getCurrentProfile } from '../../actions/profileActions'
 import isEmpty from "../../validation/is-empty"
 
@@ -47,7 +47,7 @@ class CreateProfile extends Component {
         if (nextProps.profile.profile) {
             const profile = nextProps.profile.profile
 
-            // Bring skills array to csv
+            // Bring skills array back to csv
             const skillsCSV = profile.skills.join(',')
 
             // if profile fied doesnt exists, make empty string
@@ -59,11 +59,12 @@ class CreateProfile extends Component {
             
             profile.social = !isEmpty(profile.social) ? profile.social : {}
 
-            profile.social.twitter = !isEmpty(profile.social.twitter) ? profile.social.twitter : ''
-            profile.social.facebook = !isEmpty(profile.social.facebook) ? profile.social.facebook : ''
-            profile.social.youtube = !isEmpty(profile.social.youtube) ? profile.social.youtube : ''
-            profile.social.instagram = !isEmpty(profile.social.instagram) ? profile.social.instagram : ''
-        
+            profile.twitter = !isEmpty(profile.social.twitter) ? profile.social.twitter : ''
+            profile.facebook = !isEmpty(profile.social.facebook) ? profile.social.facebook : ''
+            profile.youtube = !isEmpty(profile.social.youtube) ? profile.social.youtube : ''
+            profile.instagram = !isEmpty(profile.social.instagram) ? profile.social.instagram : ''
+            profile.linkedin = !isEmpty(profile.social.linkedin) ? profile.social.linkedin : ''
+
             //Set component field state
             this.setState({
                 handle: profile.handle,
@@ -184,7 +185,8 @@ class CreateProfile extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <h1 className="display-4 text-center">Edit Your Profile</h1>
+                            <Link to="/dashboard" className="btn btn-light">Go Back</Link>
+                            <h1 className="display-4 text-center">Edit Profile</h1>
                             <small className="d-block pb-3">* = required fields</small>
 
                             <form onSubmit={this.onSubmit}>
