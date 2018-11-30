@@ -103,6 +103,9 @@ const ProfileSchema = new Schema({
         linkedin: {
             type: String
         },
+        twitter: {
+            type: String
+        },
         instagram: {
             type: String
         }
