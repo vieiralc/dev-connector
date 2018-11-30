@@ -50,6 +50,11 @@ module.exports = function validateProfileInput(data) {
             errors.youtube = 'Not a valid url'
     }
 
+    if (!isEmpty(data.twitter)) {
+        if (!Validator.isURL(data.twitter))
+            errors.twitter = 'Not a valid url'
+    }
+
     return {
         errors: errors,
         isValid: isEmpty(errors)
