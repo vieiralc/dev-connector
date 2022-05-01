@@ -4,15 +4,16 @@ const passport = require('passport')
 const path = require('path')
 const connectDB = require("./config/db")
 
-// const users = require("./routes/api/users")
-// const profile = require("./routes/api/profile")
-// const posts = require("./routes/api/posts")
+const users = require("./routes/api/users")
+const profile = require("./routes/api/profile")
+const posts = require("./routes/api/posts")
+const auth = require("./routes/api/auth")
 
 const app = express()
 
 // Body parser middleware
 // app.use(bodyParser.urlencoded({ useNewUrlParser: true }))
-// app.use(bodyParser.json())
+app.use(express.json({ extended: false }))
 
 connectDB()
 
@@ -21,9 +22,10 @@ connectDB()
 
 // require('./config/passport')(passport)
 
-// app.use("/api/users", users)
-// app.use("/api/profile", profile)
-// app.use("/api/posts", posts)
+app.use("/api/users", users)
+app.use("/api/profile", profile)
+app.use("/api/posts", posts)
+app.use("/api/auth", auth)
 
 // Server static assets if in production
 // if (process.env.NODE_ENV == 'production') {
