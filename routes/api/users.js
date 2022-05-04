@@ -1,32 +1,34 @@
 const express = require('express')
 const router = express.Router()
-const gravatar = require('gravatar')
-const bcrypt = require('bcryptjs')
-const jwt = require ('jsonwebtoken')
-//const keys = require('../../config/keys')
-const passport = require('passport')
 const { check, validationResult } = require("express-validator")
-
-// Load Input Validation
-const validateRegisterInput = require('../../validation/register')
-const validateLoginInput    = require('../../validation/login')
-
+const userService = require("../../services/userService")
 const User = require('../../models/User')
+
+const {
+    STATUS_400,
+    STATUS_500,
+    INTERNAL_ERROR,
+    NAME_REQUIRED,
+    EMAIL_INVALID,
+    PWD_INVALID,
+    MIN_PWD_LEN,
+    USER_ALREADY_EXISTS,
+    USER_REGISTERED
+} = require("../../commons/constants")
 
 // @router  POST api/users/register
 // @dsc     Register user
 // @access  Public 
-router.post('/', [
-    check('name', 'Name is required').notEmpty(),
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+router.post('/register', [
+    check('name', NAME_REQUIRED).notEmpty(),
+    check('email', EMAIL_INVALID).isEmail(),
+    check('password', PWD_INVALID).isLength({ min: MIN_PWD_LEN })
 ], async (req, res) => {
 
-    const check = await checkErrors(req)
+    const errors = validationResult(req)
 
-    if (check.hasError) {
-        return res.status(400).json(check.response)
-    }
+    if (!errors.isEmpty())
+        return res.status(STATUS_400).json({ errors: errors.array() })
 
     const { name, email, password } = req.body
 
@@ -34,48 +36,20 @@ router.post('/', [
 
         let user = await User.findOne({ email })
 
-        if (user) {
-            return res.status(400).json({ errors: [{ msg: 'User already exists'}] })
-        }
+        if (user)
+            return res.status(STATUS_400).json({ errors: [{ msg: USER_ALREADY_EXISTS}] })
 
-        const avatar = gravatar.url(email, {
-            s: '200',
-            r: 'pg',
-            d: 'mm'
-        })
-
-        user = new User({
-            name,
-            email,
-            avatar,
-            password
-        })
-
-        const salt = await bcrypt.genSalt()
-        user.password = await bcrypt.hash(password, salt)
+        const avatar = userService.createAvatar(email)
+        user = userService.createUser(name, email, password, avatar)
+        user.password = await userService.encryptPassword(password)
 
         await user.save()
-
-        res.send('User registered')
-
+        res.send(USER_REGISTERED)
     } catch (err) {
         console.error(err.message)
-        res.status(500).send("Internal server error")
+        res.status(STATUS_500).send(INTERNAL_ERROR)
     }
 })
-
-const checkErrors = request => {
-    const errors = validationResult(request)
-
-    if (!errors.isEmpty()) {
-        return { 
-            hasError: true,
-            response: { errors: errors.array() }
-        }
-    }
-    
-    return { hasError: false }
-}
 
 // // @router  POST api/users/login
 // // @dsc     Login User / returns JWT Token
