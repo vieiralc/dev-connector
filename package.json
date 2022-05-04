@@ -1,6 +1,6 @@
 {
   "name": "devconnector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Social network for developers",
   "main": "server.js",
   "scripts": {
@@ -24,17 +24,19 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
-    "concurrently": "^3.6.0",
+    "concurrently": "^7.1.0",
+    "config": "^3.3.7",
     "express": "^4.16.3",
+    "express-validator": "^6.14.0",
     "gravatar": "^1.6.0",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.22.2",
     "mongoose": "^5.2.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^10.4.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
-    "nodemon": "^1.17.5"
+    "nodemon": "^2.0.16"
   }
 }
