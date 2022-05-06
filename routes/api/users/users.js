@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require("express-validator")
-const userService = require("../../services/userService")
-const User = require('../../models/User')
+const userService = require("../../../services/userService")
+const User = require('../../../models/User')
 
 const {
     STATUS_400,
@@ -14,7 +14,7 @@ const {
     MIN_PWD_LEN,
     USER_ALREADY_EXISTS,
     USER_REGISTERED
-} = require("../../commons/constants")
+} = require("../../../commons/constants")
 
 // @router  POST api/users/register
 // @dsc     Register user
