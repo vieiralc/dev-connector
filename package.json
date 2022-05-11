@@ -9,7 +9,7 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest --detectOpenHandles"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
