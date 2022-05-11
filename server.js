@@ -2,7 +2,7 @@ const express = require("express")
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const path = require('path')
-const connectDB = require("./config/db")
+const db = require("./config/db")
 
 const users = require("./routes/api/users/users")
 const profile = require("./routes/api/profile")
@@ -15,7 +15,7 @@ const app = express()
 // app.use(bodyParser.urlencoded({ useNewUrlParser: true }))
 app.use(express.json({ extended: false }))
 
-connectDB()
+db.getDBConnection()
 
 // Passport middleware
 // app.use(passport.initialize())
@@ -41,6 +41,9 @@ app.get('/', (req, res) => res.send('API Running'))
 
 const port = process.env.PORT || 5000
 
-app.listen(port, () => console.log(`Server running on port ${port}`))
+const listener = app.listen(port, () => console.log(`Server running on port ${port}`))
 
-module.exports = app
+module.exports = {
+    listener,
+    app
+}

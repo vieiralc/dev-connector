@@ -4,7 +4,7 @@ const db = config.get('mongoURI')
 
 const EXIT_WITH_FAILURE = 1
 
-const connectDB = async () => {
+const getDBConnection = async () => {
     try {
         await mongoose.connect(db, 
             { 
@@ -18,4 +18,11 @@ const connectDB = async () => {
     }
 }
 
-module.exports = connectDB
+const closeDBConnection = async () => {
+    mongoose.connection.close()
+}
+
+module.exports = {
+    getDBConnection,
+    closeDBConnection
+}
