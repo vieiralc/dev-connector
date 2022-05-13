@@ -9,11 +9,14 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vieiralc/devConnector.git"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["./client"]
   },
   "author": "Lucas Vieira",
   "license": "ISC",
@@ -37,6 +40,8 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "jest": "^28.0.3",
+    "nodemon": "^2.0.16",
+    "supertest": "^6.2.3"
   }
 }

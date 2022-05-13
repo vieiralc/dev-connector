@@ -4,7 +4,7 @@ const db = config.get('mongoURI')
 
 const EXIT_WITH_FAILURE = 1
 
-const connectDB = async () => {
+const getDBConnection = async () => {
     try {
         await mongoose.connect(db, 
             { 
@@ -13,11 +13,16 @@ const connectDB = async () => {
                 useUnifiedTopology: true
             }
         )
-        console.log('Mongo db connected...')
     } catch(err) {
-        console.error(err.message)
         process.exit(EXIT_WITH_FAILURE)
     }
 }
 
-module.exports = connectDB
+const closeDBConnection = async () => {
+    mongoose.connection.close()
+}
+
+module.exports = {
+    getDBConnection,
+    closeDBConnection
+}
