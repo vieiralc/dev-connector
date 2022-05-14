@@ -1,3 +1,4 @@
+const STATUS_200 = 200
 const STATUS_400 = 400
 const STATUS_500 = 500
 const INTERNAL_ERROR = 'Internal server error'
@@ -10,6 +11,7 @@ const USER_ALREADY_EXISTS = 'User already exists'
 const USER_REGISTERED = 'User registered'
 
 module.exports = {
+    STATUS_200,
     STATUS_400,
     STATUS_500,
     INTERNAL_ERROR,
