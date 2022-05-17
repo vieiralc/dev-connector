@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { check, validationResult } = require("express-validator")
-const userService = require("../../../services/userService")
+const { check, validationResult } = require('express-validator')
+const userService = require('../../../services/userService')
 const User = require('../../../models/User')
 
 const {
@@ -12,9 +12,8 @@ const {
     EMAIL_INVALID,
     PWD_INVALID,
     MIN_PWD_LEN,
-    USER_ALREADY_EXISTS,
-    USER_REGISTERED
-} = require("../../../commons/constants")
+    USER_ALREADY_EXISTS
+} = require('../../../commons/constants')
 
 // @router  POST api/users/register
 // @dsc     Register user
@@ -44,7 +43,10 @@ router.post('/register', [
         user.password = await userService.encryptPassword(password)
 
         await user.save()
-        res.send(USER_REGISTERED)
+
+        const payload = { user: { id: user.id } }
+        const token = await userService.generateUserToken(payload)
+        res.json(token)
     } catch (err) {
         console.error(err.message)
         res.status(STATUS_500).send(INTERNAL_ERROR)

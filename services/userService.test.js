@@ -28,4 +28,11 @@ describe('User service test', () => {
         expect(hashedPassword.length).toBeGreaterThan(testData.password.length)
     })
 
+    it('should create user auth token', async () => {
+        const payload = { user: { id: 'userid' } }
+        const response = await userService
+            .generateUserToken(payload)
+        expect(response).toHaveProperty('token')
+    })
+
 })
