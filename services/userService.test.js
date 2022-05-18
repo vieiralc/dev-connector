@@ -9,6 +9,7 @@ describe('User service test', () => {
         avatarUrl: avatarUrl,
         password: '123456'
     }
+    let encryptedPassword
 
     it('should create user avatar', () => {
         const url = userService.createAvatar(testData.email)
@@ -23,9 +24,9 @@ describe('User service test', () => {
         expect(user).toHaveProperty('_id')
     })
 
-    it('should hash a password', async () => {
-        const hashedPassword = await userService.encryptPassword(testData.password)
-        expect(hashedPassword.length).toBeGreaterThan(testData.password.length)
+    it('should encrypt a password', async () => {
+        encryptedPassword = await userService.encryptPassword(testData.password)
+        expect(encryptedPassword.length).toBeGreaterThan(testData.password.length)
     })
 
     it('should create user auth token', async () => {
@@ -33,6 +34,12 @@ describe('User service test', () => {
         const response = await userService
             .generateUserToken(payload)
         expect(response).toHaveProperty('token')
+    })
+
+    it('should check if user password is correct', async () => {
+        const response = await userService
+            .checkPassword(testData.password, encryptedPassword)
+        expect(response).toBe(true)
     })
 
 })

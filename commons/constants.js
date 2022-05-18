@@ -11,6 +11,8 @@ const MIN_PWD_LEN = 6
 const USER_ALREADY_EXISTS = 'User already exists'
 const TOKEN_EXPIRATION_TIME = 360000
 const NOT_AUTHORIZED = 'Access denied. Please login to see this page'
+const PASSWORD_REQUIRED = 'Password is required'
+const INVALID_CREDENTIALS = 'Invalid Credentials'
 
 module.exports = {
     STATUS_200,
@@ -24,5 +26,7 @@ module.exports = {
     MIN_PWD_LEN,
     USER_ALREADY_EXISTS,
     TOKEN_EXPIRATION_TIME,
-    NOT_AUTHORIZED
+    NOT_AUTHORIZED,
+    PASSWORD_REQUIRED,
+    INVALID_CREDENTIALS
 }

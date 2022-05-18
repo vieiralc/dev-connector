@@ -18,6 +18,7 @@ describe('Post api/users', () => {
     describe('Register an user', () => {
 
         const api = '/api/users/register'
+        let newUser = {}
 
         const getErrorMessage = (response, msgErrors) => {
             if (msgErrors) {
@@ -31,19 +32,21 @@ describe('Post api/users', () => {
 
         it('should respond with a 200 status code', async () => {
             const id = crypto.randomBytes(20).toString('hex')
-            const response = await request(server.app).post(api)
-                .send({
-                    "name": userData.newUser.name,
-                    "email": `${id}@email.com`,
-                    "password": userData.newUser.password
-                })
+            newUser = {
+                "name": userData.newUser.name,
+                "email": `${id}@email.com`,
+                "password": userData.newUser.password
+            }
 
+            const response = await request(server.app).post(api)
+                .send(newUser)
             expect(response.statusCode).toBe(STATUS_200)
         })
 
         it('should fail when creating an already registered user', async () => {
+            const alreadyRegisteredUser = newUser
             const response = await request(server.app).post(api)
-                .send(userData.alreadyRegisteredUser)
+                .send(alreadyRegisteredUser)
             const msgErrors = 1
             const errorMsgsArray = getErrorMessage(response, msgErrors)
 
@@ -53,7 +56,7 @@ describe('Post api/users', () => {
 
         it('should fail when sending and empty object', async () => {
             const response = await request(server.app).post(api)
-                .send(userData.noData)
+                .send({})
             const msgErrors = 3
             const errorMsgsArray = getErrorMessage(response, msgErrors)
 

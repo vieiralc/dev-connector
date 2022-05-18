@@ -36,7 +36,7 @@ router.post('/register', [
         let user = await User.findOne({ email })
 
         if (user)
-            return res.status(STATUS_400).json({ errors: [{ msg: USER_ALREADY_EXISTS}] })
+            return res.status(STATUS_400).json({ errors: [{ msg: USER_ALREADY_EXISTS }] })
 
         const avatar = userService.createAvatar(email)
         user = userService.createUser(name, email, password, avatar)

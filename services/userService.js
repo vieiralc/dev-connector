@@ -47,9 +47,15 @@ const generateUserToken = payload => {
     return token
 }
 
+const checkPassword = async (password, encryptedPassword) => {
+    const isPasswordCorrect = await bcrypt.compare(password, encryptedPassword)
+    return isPasswordCorrect
+}
+
 module.exports = userService = {
     createAvatar,
     createUser,
     encryptPassword,
-    generateUserToken
+    generateUserToken,
+    checkPassword
 }
