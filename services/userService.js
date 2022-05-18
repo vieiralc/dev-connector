@@ -1,6 +1,9 @@
 const gravatar = require('gravatar')
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const config = require('config')
+const { TOKEN_EXPIRATION_TIME } = require('../commons/constants')
 
 const createAvatar = userEmail => {
     const avatar = gravatar.url(userEmail, {
@@ -29,8 +32,30 @@ const encryptPassword = async password => {
     return hashedPassword
 }
 
+const generateUserToken = payload => {
+    
+    const token = new Promise((resolve, reject) => {
+        jwt.sign(payload, config.get('jwtSecret'), 
+            { expiresIn: TOKEN_EXPIRATION_TIME }, 
+            (err, token) => {
+                if (err) reject(err)
+                resolve({ token })
+            }
+        )
+    })
+    
+    return token
+}
+
+const checkPassword = async (password, encryptedPassword) => {
+    const isPasswordCorrect = await bcrypt.compare(password, encryptedPassword)
+    return isPasswordCorrect
+}
+
 module.exports = userService = {
     createAvatar,
     createUser,
-    encryptPassword
+    encryptPassword,
+    generateUserToken,
+    checkPassword
 }

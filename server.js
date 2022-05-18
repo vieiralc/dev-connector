@@ -7,7 +7,7 @@ const db = require("./config/db")
 const users = require("./routes/api/users/users")
 const profile = require("./routes/api/profile")
 const posts = require("./routes/api/posts")
-const auth = require("./routes/api/auth")
+const auth = require("./routes/api/auth/auth")
 
 const app = express()
 
