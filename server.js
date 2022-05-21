@@ -5,14 +5,12 @@ const path = require('path')
 const db = require("./config/db")
 
 const users = require("./routes/api/users/users")
-const profile = require("./routes/api/profile")
+const profile = require("./routes/api/profile/profile")
 const posts = require("./routes/api/posts")
 const auth = require("./routes/api/auth/auth")
 
 const app = express()
 
-// Body parser middleware
-// app.use(bodyParser.urlencoded({ useNewUrlParser: true }))
 app.use(express.json({ extended: false }))
 
 db.getDBConnection()
