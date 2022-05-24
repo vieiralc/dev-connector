@@ -36,6 +36,27 @@ const createProfileObject = requestData => {
     return profileFields
 }
 
+const createExperienceObject = ({ 
+    title, 
+    company, 
+    location, 
+    from, 
+    to, 
+    current, 
+    description 
+}) => {
+    return {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    }
+}
+
 module.exports = profileService = {
-    createProfileObject
+    createProfileObject,
+    createExperienceObject
 }

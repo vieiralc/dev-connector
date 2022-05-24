@@ -21,6 +21,10 @@ const INVALID_CREDENTIALS = 'Invalid Credentials'
 const NO_PROFILE_FOUND = 'Profile not found'
 const STATUS_REQUIRED = 'Status is required'
 const SKILL_REQUIRED = 'Skill is required'
+const USER_DELETED = 'User deleted'
+const TITLE_REQUIRED = 'Title is required'
+const COMPANY_REQUIRED = 'Company is required'
+const FROM_DATE_REQUIRED = 'From date is required'
 
 module.exports = {
     STATUS_200,
@@ -39,5 +43,9 @@ module.exports = {
     INVALID_CREDENTIALS,
     NO_PROFILE_FOUND,
     STATUS_REQUIRED,
-    SKILL_REQUIRED
+    SKILL_REQUIRED,
+    USER_DELETED,
+    TITLE_REQUIRED,
+    COMPANY_REQUIRED,
+    FROM_DATE_REQUIRED
 }

@@ -13,7 +13,11 @@ const {
     INTERNAL_ERROR,
     NO_PROFILE_FOUND,
     STATUS_REQUIRED,
-    SKILL_REQUIRED
+    SKILL_REQUIRED,
+    USER_DELETED,
+    TITLE_REQUIRED,
+    COMPANY_REQUIRED,
+    FROM_DATE_REQUIRED
 } = require('../../../commons/constants')
 
 // @router  GET api/profile/me
@@ -109,54 +113,33 @@ router.get('/user/:user_id', async (req, res) => {
     }
 })
 
-// // @router  GET api/profile/handle/:handle
-// // @dsc     Get profile by handle
-// // @access  Public
-// router.get('/handle/:handle', (req, res) => {
-//     const errors = {}
+// @router  PUT api/profile/experience
+// @dsc     Add profile experience
+// @access  Private
+router.put('/experience', [
+    auth_middleware,
+    check('title', TITLE_REQUIRED).not().isEmpty(),
+    check('company', COMPANY_REQUIRED).not().isEmpty(),
+    check('from', FROM_DATE_REQUIRED).not().isEmpty()
+], async (req, res) => {
+    const errors = validationResult(req)
 
-//     Profile.findOne({ handle: req.params.handle })
-//         .populate('user', ['name', 'avatar'])
-//         .then(profile => {
-//             if (!profile) {
-//                 errors.noprofile = 'There is no profile for this user'
-//                 return res.status(404).json(errors)
-//             }
+    if (!errors.isEmpty()) {
+        return res.status(STATUS_400).json({ errors: errors.array() })
+    }
 
-//             res.json(profile)
-//         })
-//         .catch(err => res.status(404).json(err))
-// })
+    const newExperience = profileService.createExperienceObject(req.body)
 
-// // @router  POST api/profile/experience
-// // @dsc     Add experience to profile
-// // @access  Private
-// router.post('/experience', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     console.log(JSON.stringify(req.body))
-//     const {errors, isValid} = validateExperienceInput(req.body)
-
-//     // Check Validation
-//     if (!isValid) return res.status(400).json(errors)
-    
-//     Profile.findOne({ user: req.user.id })
-//         .then(profile => {
-//             const newExp = {
-//                 title: req.body.title,
-//                 company: req.body.company,
-//                 location: req.body.location,
-//                 from: req.body.from,
-//                 to: req.body.to,
-//                 current: req.body.current,
-//                 description: req.body.description
-//             }
-
-//             // Add to exp array
-//             profile.experience.unshift(newExp)
-            
-//             profile.save().then(profile => res.json(profile))
-//         })
-//         .catch(err => res.status(404).json(err))
-// })
+    try {
+        const profile = await Profile.findOne({ user: req.user.id })
+        profile.experience.unshift(newExperience)
+        await profile.save()
+        res.json(profile)
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 
 // // @router  POST api/profile/education
@@ -230,17 +213,21 @@ router.get('/user/:user_id', async (req, res) => {
 
 // })
 
-// // @router  DELETE api/profile/
-// // @dsc     Delete user and profile
-// // @access  Private
-// router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    
-//     Profile.findOneAndRemove({ user: req.user.id })
-//         .then(() => {
-//             User.findOneAndRemove({ _id: req.user.id })
-//                 .then(() => res.json({success: true}))
-//         })
+// @router  DELETE api/profile/
+// @dsc     Delete user and profile
+// @access  Private
+router.delete('/', auth_middleware, async (req, res) => {
+    try {
+        // @todo - remove profile
 
-// })
+        await Profile.findOneAndRemove({ user: req.user.id })
+        await User.findOneAndRemove({ _id: req.user.id })
+        
+        res.json({ msg: USER_DELETED })
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 module.exports = router
