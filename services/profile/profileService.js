@@ -36,6 +36,66 @@ const createProfileObject = requestData => {
     return profileFields
 }
 
+const createEducationObject = ({
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description
+}) => {
+    return {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description
+    }
+}
+
+const createExperienceObject = ({ 
+    title, 
+    company, 
+    location, 
+    from, 
+    to, 
+    current, 
+    description 
+}) => {
+    return {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    }
+}
+
+const findExperienceAndRemove = (profile, experienceId) => {
+    const removeIndex = findIndexOf(profile.experience, experienceId)
+    profile.experience.splice(removeIndex, 1)
+}
+
+const findEducationAndRemove = (profile, educationId) => {
+    const removeIndex = findIndexOf(profile.education, educationId)
+    profile.education.splice(removeIndex, 1)
+}
+
+const findIndexOf = (array, id) => {
+    const index = array.map(item => item.id)
+        .indexOf(id)
+    return index
+}
+
 module.exports = profileService = {
-    createProfileObject
+    createProfileObject,
+    createExperienceObject,
+    findExperienceAndRemove,
+    findEducationAndRemove,
+    createEducationObject
 }
