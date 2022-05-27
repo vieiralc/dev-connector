@@ -25,6 +25,9 @@ const USER_DELETED = 'User deleted'
 const TITLE_REQUIRED = 'Title is required'
 const COMPANY_REQUIRED = 'Company is required'
 const FROM_DATE_REQUIRED = 'From date is required'
+const SCHOOL_REQUIRED = 'School is required'
+const DEGREE_REQUIRED = 'Degree is required'
+const FIELD_OF_STUDY_REQUIRED = 'Field of study is required'
 
 module.exports = {
     STATUS_200,
@@ -47,5 +50,8 @@ module.exports = {
     USER_DELETED,
     TITLE_REQUIRED,
     COMPANY_REQUIRED,
-    FROM_DATE_REQUIRED
+    FROM_DATE_REQUIRED,
+    SCHOOL_REQUIRED,
+    DEGREE_REQUIRED,
+    FIELD_OF_STUDY_REQUIRED
 }

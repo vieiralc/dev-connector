@@ -17,7 +17,10 @@ const {
     USER_DELETED,
     TITLE_REQUIRED,
     COMPANY_REQUIRED,
-    FROM_DATE_REQUIRED
+    FROM_DATE_REQUIRED,
+    SCHOOL_REQUIRED,
+    DEGREE_REQUIRED,
+    FIELD_OF_STUDY_REQUIRED
 } = require('../../../commons/constants')
 
 // @router  GET api/profile/me
@@ -142,76 +145,66 @@ router.put('/experience', [
 })
 
 
-// // @router  POST api/profile/education
-// // @dsc     Add education to profile
-// // @access  Private
-// router.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     const {errors, isValid} = validateEducationInput(req.body)
+// @router  PUT api/profile/education
+// @dsc     Add education to profile
+// @access  Private
+router.put('/education', [
+    auth_middleware,
+    check('school', SCHOOL_REQUIRED).not().isEmpty(),
+    check('degree', DEGREE_REQUIRED).not().isEmpty(),
+    check('fieldofstudy', FIELD_OF_STUDY_REQUIRED).not().isEmpty(),
+    check('from', FROM_DATE_REQUIRED).not().isEmpty()
+], async (req, res) => {
+    const errors = validationResult(req)
 
-//     // Check Validation
-//     if (!isValid) return res.status(400).json(errors)
-    
-//     Profile.findOne({ user: req.user.id })
-//         .then(profile => {
-//             const newEdu = {
-//                 school: req.body.school,
-//                 degree: req.body.degree,
-//                 fieldofstudy: req.body.fieldofstudy,
-//                 from: req.body.from,
-//                 to: req.body.to,
-//                 current: req.body.current,
-//                 description: req.body.description
-//             }
+    if (!errors.isEmpty()) {
+        return res.status(STATUS_400).json({ errors: errors.array() })
+    }
 
-//             // Add to exp array
-//             profile.education.unshift(newEdu)
-            
-//             profile.save().then(profile => res.json(profile))
-//         })
-//         .catch(err => res.status(404).json(err))
-// })
+    const newEducation = profileService.createEducationObject(req.body)
 
-// // @router  DELETE api/profile/experience/:exp_id
-// // @dsc     Delete experience from profile
-// // @access  Private
-// router.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    
-//     Profile.findOne({ user: req.user.id }).then(profile => {
-//         // Get remove index
-//         const removeIndex = profile.experience
-//             .map(item => item.id)
-//             .indexOf(req.params.exp_id)
+    try {
+        const profile = await Profile.findOne({ user: req.user.id })
+        profile.education.unshift(newEducation)
+        await profile.save()
+        res.json(profile)
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-//         // Splice out of array
-//         profile.experience.splice(removeIndex, 1)
+// @router  DELETE api/profile/experience/:exp_id
+// @dsc     Delete experience from profile
+// @access  Private
+router.delete('/experience/:experience_id', auth_middleware, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id })
+        profileService.findExperienceAndRemove(profile, req.params.experience_id)
+        
+        await profile.save()
+        res.json(profile)
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-//         // Save
-//         profile.save().then(profile => res.json(profile))
-//     })
-//     .catch(err => res.status(404).json(err))
-
-// })
-
-// // @router  DELETE api/profile/education/:edu_id
+// // @router  DELETE api/profile/education/:education_id
 // // @dsc     Delete education from profile
 // // @access  Private
-// router.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    
-//     Profile.findOne({ user: req.user.id }).then(profile => {
-//         // Get remove index
-//         const removeIndex = profile.education
-//             .map(item => item.id)
-//             .indexOf(req.params.edu_id)
-
-//         // Splice out of array
-//         profile.education.splice(removeIndex, 1)
-
-//         // Save
-//         profile.save().then(profile => res.json(profile))
-//     })
-//     .catch(err => res.status(404).json(err))
-
-// })
+router.delete('/education/:education_id', auth_middleware, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id })
+        profileService.findEducationAndRemove(profile, req.params.education_id)
+        
+        await profile.save()
+        res.json(profile)
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 // @router  DELETE api/profile/
 // @dsc     Delete user and profile
