@@ -1,6 +1,7 @@
 const STATUS_200 = 200
 const STATUS_400 = 400
 const STATUS_401 = 401
+const STATUS_404 = 404
 const STATUS_500 = 500
 const INTERNAL_ERROR = 'Internal server error'
 
@@ -33,6 +34,7 @@ module.exports = {
     STATUS_200,
     STATUS_400,
     STATUS_401,
+    STATUS_404,
     STATUS_500,
     INTERNAL_ERROR,
     NAME_REQUIRED,
