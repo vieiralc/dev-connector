@@ -1,4 +1,6 @@
 const express = require('express')
+const request = require('request')
+const config = require('config')
 const router = express.Router()
 const auth_middleware = require('../../../middleware/auth')
 const { check, validationResult } = require('express-validator')
@@ -9,6 +11,7 @@ const User = require('../../../models/User')
 
 const { 
     STATUS_400,
+    STATUS_404,
     STATUS_500, 
     INTERNAL_ERROR,
     NO_PROFILE_FOUND,
@@ -217,6 +220,30 @@ router.delete('/', auth_middleware, async (req, res) => {
         await User.findOneAndRemove({ _id: req.user.id })
         
         res.json({ msg: USER_DELETED })
+    } catch(err) {
+        console.error(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
+
+// @router  GET api/profile/github/:username
+// @dsc     Get user repos from github
+// @access  Public
+router.get('/github/:username', async (req, res) => {
+    try {
+        const options = {
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=${config.get('githubSecret')}`,
+            method: 'GET',
+            headers: { 'user-agent': 'node.js' }
+        }
+        request(options, (error, response, body) => {
+            if (error) console.error(error)
+            if (response.statusCode !== 200) {
+                return res.status(STATUS_404).json({ msg: 'No Github profile found' })
+            }
+
+            res.json(JSON.parse(body))
+        })
     } catch(err) {
         console.error(err.message)
         res.status(STATUS_500).send(INTERNAL_ERROR)
