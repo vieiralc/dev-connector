@@ -1,12 +1,9 @@
 const express = require("express")
-const bodyParser = require('body-parser')
-const passport = require('passport')
-const path = require('path')
 const db = require("./config/db")
 
 const users = require("./routes/api/users/users")
 const profile = require("./routes/api/profile/profile")
-const posts = require("./routes/api/posts")
+const posts = require("./routes/api/posts/posts")
 const auth = require("./routes/api/auth/auth")
 
 const app = express()

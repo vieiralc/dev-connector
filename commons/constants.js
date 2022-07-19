@@ -30,6 +30,12 @@ const SCHOOL_REQUIRED = 'School is required'
 const DEGREE_REQUIRED = 'Degree is required'
 const FIELD_OF_STUDY_REQUIRED = 'Field of study is required'
 
+// posts route
+const TEXT_REQUIRED = 'Text is required'
+const NO_POST_FOUND = 'No post found'
+const USER_NOT_AUTHORIZED = 'User not authorized'
+const POST_REMOVED = 'Post removed'
+
 module.exports = {
     STATUS_200,
     STATUS_400,
@@ -55,5 +61,9 @@ module.exports = {
     FROM_DATE_REQUIRED,
     SCHOOL_REQUIRED,
     DEGREE_REQUIRED,
-    FIELD_OF_STUDY_REQUIRED
+    FIELD_OF_STUDY_REQUIRED,
+    TEXT_REQUIRED,
+    NO_POST_FOUND,
+    USER_NOT_AUTHORIZED,
+    POST_REMOVED
 }
