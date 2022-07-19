@@ -1,73 +1,116 @@
 const express = require('express')
 const router = express.Router()
-const passport = require('passport')
+const auth_middleware = require('../../../middleware/auth')
+const { check, validationResult } = require('express-validator')
 
-// Load Post Model
-const Post = require('../../models/Post')
+const { 
+    STATUS_400,
+    STATUS_401,
+    STATUS_404,
+    STATUS_500, 
+    INTERNAL_ERROR,
+    NO_POST_FOUND,
+    TEXT_REQUIRED,
+    USER_NOT_AUTHORIZED,
+    POST_REMOVED
+} = require('../../../commons/constants')
 
-// Load post validation
-const validatePostInput = require('../../validation/post')
-
-// @router  GET api/post
-// @dsc     Test route
-// @access  Public 
-router.get('/', (req, res) => res.send('Posts route'))
+const Post = require('../../../models/Post')
+const Profile = require('../../../models/Profile')
+const User = require('../../../models/User')
 
 // @route  GET api/posts
 // @desc   Get posts
-// @access Public
-// router.get('/', (req, res) => {
-//     Post.find()
-//         .sort({date: -1})
-//         .then(posts => res.json(posts))
-//         .catch(err => res.status(404).json({nopostsfound: 'No posts found'}))
-// })
+// @access Private
+router.get('/', auth_middleware, async (req, res) => {
+    try {
+        const posts = await Post.find().sort({ date: -1 })
+        res.json(posts)
+    } catch(err) {
+        console.log(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-// // @route  GET api/post/:id
-// // @desc   Get posts by id
-// // @access Public
-// router.get('/:id', (req, res) => {
-//     Post.findById(req.params.id)
-//         .then(post => res.json(post))
-//         .catch(err => res.status(404).json({nopostfound: 'No post found with that ID'}))
-// })
+// @route  GET api/post/:id
+// @desc   Get post by id
+// @access Private
+router.get('/:id', auth_middleware, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
 
-// // @route  POST api/posts
-// // @desc   Create post
-// // @access Private
-// router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     const { errors, isValid } = validatePostInput(req.body)
+        if (!post) {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
 
-//     // Check validation
-//     if (!isValid) return res.status(400).json(errors)
+        res.json(post)
+    } catch (err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-//     const newPost = new Post({
-//         text: req.body.text,
-//         name: req.body.name,
-//         avatar: req.body.avatar,
-//         user: req.user.id
-//     })
+// @route  POST api/posts
+// @desc   Create post
+// @access Private
+router.post('/', [
+    auth_middleware,
+    check('text', TEXT_REQUIRED).not().isEmpty()
+], async (req, res) => {
 
-//     newPost.save().then(post => res.json(post))
-// })
+    const errors = validationResult(req)
 
-// // @route  DELETE api/posts/:id
-// // @desc   Delete post
-// // @access Private
-// router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
- 
-//     Post.findById(req.params.id)
-//         .then(post => {
-//             // Check for post owner
-//             if (post.user.toString() !== req.user.id) {
-//                 return res.status(401).json({ notauthorized: 'User not authorized' })
-//             }
+    if (!errors.isEmpty()) {
+        return res.status(STATUS_400).json({ errors: errors.array() })
+    }
 
-//             // Delete
-//             post.remove().then(() => res.json({ success: true }))
-//         })
-//         .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))  
-// })
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+
+        const newPost = new Post({
+            text: req.body.text,
+            name: user.name,
+            avatar: user.avatar,
+            user: req.user.id
+        })
+
+        const post = await newPost.save()
+        res.json(post)
+    } catch (err) {
+        console.log(err.message)
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
+
+// @route  DELETE api/posts/:id
+// @desc   Delete a post
+// @access Private
+router.delete('/:id', auth_middleware, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+
+        if (!post) {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+
+        if (post.user.toString() !== req.user.id) {
+            return res.status(STATUS_401).json({ msg: USER_NOT_AUTHORIZED })
+        }
+
+        await post.remove()
+
+        res.json({ msg: POST_REMOVED })
+    } catch (err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 // // @route  POST api/posts/like/:id
 // // @desc   Like post
