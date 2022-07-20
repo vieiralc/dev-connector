@@ -35,6 +35,8 @@ const TEXT_REQUIRED = 'Text is required'
 const NO_POST_FOUND = 'No post found'
 const USER_NOT_AUTHORIZED = 'User not authorized'
 const POST_REMOVED = 'Post removed'
+const USER_ALREADY_LIKED_POST = 'User already liked this post'
+const USER_HAS_NOT_LIKED_POST_YET = 'You have not yet liked this post'
 
 module.exports = {
     STATUS_200,
@@ -65,5 +67,7 @@ module.exports = {
     TEXT_REQUIRED,
     NO_POST_FOUND,
     USER_NOT_AUTHORIZED,
-    POST_REMOVED
+    POST_REMOVED,
+    USER_ALREADY_LIKED_POST,
+    USER_HAS_NOT_LIKED_POST_YET
 }
