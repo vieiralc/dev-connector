@@ -12,7 +12,9 @@ const {
     NO_POST_FOUND,
     TEXT_REQUIRED,
     USER_NOT_AUTHORIZED,
-    POST_REMOVED
+    POST_REMOVED,
+    USER_ALREADY_LIKED_POST,
+    USER_HAS_NOT_LIKED_POST_YET
 } = require('../../../commons/constants')
 
 const Post = require('../../../models/Post')
@@ -112,46 +114,70 @@ router.delete('/:id', auth_middleware, async (req, res) => {
     }
 })
 
-// // @route  POST api/posts/like/:id
-// // @desc   Like post
-// // @access Private
-// router.post('/like/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    
-//     Post.findById(req.params.id)
-//         .then(post => {
-//             if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0)
-//                 return res.status(400).json({ alreadyliked: 'User already liked this post'})
+// @route  PUT api/posts/like/:id
+// @desc   Like post
+// @access Private
+router.put('/like/:id', auth_middleware, async (req, res) => {
+    try {
+        const postId = req.params.id
+        const post = await Post.findById(postId)
 
-//             // Add user id to likes array
-//             post.likes.unshift({ user: req.user.id })
-            
-//             post.save().then(post => res.json(post))
-//         })
-//         .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
-// })
+        if (!post) {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
 
-// // @route  POST api/posts/unlike/:id
-// // @desc   Unlike post
-// // @access Private
-// router.post('/unlike/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    
-//     Post.findById(req.params.id)
-//         .then(post => {
-//             if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0)
-//                 return res.status(400).json({ notliked: 'You have not yet liked this post'})
+        const authenticatedUserId = req.user.id
+        const hasAuthenticatedUserLikedPost = post.likes.filter(like => like.user.toString() === authenticatedUserId).length > 0
 
-//             // Get the remove index
-//             const removeIndex = post.likes
-//                 .map(item => item.user.toString())
-//                 .indexOf(req.user.id)
+        if (hasAuthenticatedUserLikedPost) {
+            return res.status(STATUS_400).json({ msg: USER_ALREADY_LIKED_POST })
+        }
 
-//             // Splice out of array
-//             post.likes.splice(removeIndex, 1)
+        post.likes.unshift({ user: authenticatedUserId })
+        await post.save()
+        res.json(post.likes)
+    } catch (err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-//             post.save().then(post => res.json(post))
-//         })
-//         .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
-// })
+// @route  PUT api/posts/unlike/:id
+// @desc   Unlike post
+// @access Private
+router.put('/unlike/:id', auth_middleware, async (req, res) => {
+    try {
+        const postId = req.params.id
+        const post = await Post.findById(postId)
+
+        if (!post) {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+
+        const authenticatedUserId = req.user.id
+        const hasAuthenticatedUserLikedPost = post.likes.filter(like => like.user.toString() === authenticatedUserId).length > 0
+
+        if (!hasAuthenticatedUserLikedPost) {
+            return res.status(STATUS_400).json({ msg: USER_HAS_NOT_LIKED_POST_YET })
+        }
+
+        const likesArray = post.likes.map(like => like.user.toString())
+        const removeIndex = likesArray.indexOf(authenticatedUserId)
+
+        post.likes.splice(removeIndex, 1)
+        await post.save()
+        res.json(post.likes)
+    } catch (err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 // // @route  POST api/posts/comment/:id
 // // @desc   Comment to post
