@@ -37,6 +37,7 @@ const USER_NOT_AUTHORIZED = 'User not authorized'
 const POST_REMOVED = 'Post removed'
 const USER_ALREADY_LIKED_POST = 'User already liked this post'
 const USER_HAS_NOT_LIKED_POST_YET = 'You have not yet liked this post'
+const COMMENT_DOES_NOT_EXISTS = 'This comment not exists'
 
 module.exports = {
     STATUS_200,
@@ -69,5 +70,6 @@ module.exports = {
     USER_NOT_AUTHORIZED,
     POST_REMOVED,
     USER_ALREADY_LIKED_POST,
-    USER_HAS_NOT_LIKED_POST_YET
+    USER_HAS_NOT_LIKED_POST_YET,
+    COMMENT_DOES_NOT_EXISTS
 }
