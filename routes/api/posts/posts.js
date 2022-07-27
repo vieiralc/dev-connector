@@ -14,7 +14,8 @@ const {
     USER_NOT_AUTHORIZED,
     POST_REMOVED,
     USER_ALREADY_LIKED_POST,
-    USER_HAS_NOT_LIKED_POST_YET
+    USER_HAS_NOT_LIKED_POST_YET,
+    COMMENT_DOES_NOT_EXISTS
 } = require('../../../commons/constants')
 
 const Post = require('../../../models/Post')
@@ -179,53 +180,75 @@ router.put('/unlike/:id', auth_middleware, async (req, res) => {
     }
 })
 
-// // @route  POST api/posts/comment/:id
-// // @desc   Comment to post
-// // @access Private
-// router.post('/comment/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     const { errors, isValid } = validatePostInput(req.body)
+// @route  PUT api/posts/comment/:id
+// @desc   Comment on a post
+// @access Private
+router.put('/comment/:id', [
+        auth_middleware,
+        check('text', TEXT_REQUIRED).not().isEmpty()
+], async (req, res) => {
 
-//     // Check validation
-//     if (!isValid) return res.status(400).json(errors)
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(STATUS_400).json({ errors: errors.array() })
+    }
 
-//     Post.findById(req.params.id)
-//         .then(post => {
-//             const newComment = {
-//                 text: req.body.text,
-//                 name: req.body.name,
-//                 avatar: req.body.avatar,
-//                 user: req.user.id
-//             }
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+        const post = await Post.findById(req.params.id)
 
-//             post.comments.unshift(newComment)
+        const newComment = {
+            text: req.body.text,
+            name: user.name,
+            avatar: user.avatar,
+            user: req.user.id
+        }
 
-//             post.save().then(post => res.json(post))
-//         })
-//         .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
-// })
+        post.comments.unshift(newComment)
+        await post.save()
+        res.json(post.comments)
+    } catch(err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
-// // @route  DELETE api/posts/comment/:id/:comment_id
-// // @desc   Remove comment from post
-// // @access Private
-// router.delete('/comment/:id/:comment_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+// @route  DELETE api/posts/comment/:id/:comment_id
+// @desc   Remove comment from post
+// @access Private
+router.delete('/comment/:id/:comment_id', auth_middleware, async (req, res) => {
+    try {
+        const postId = req.params.id
+        const commentId = req.params.comment_id
+        const userId = req.user.id
 
-//     Post.findById(req.params.id)
-//         .then(post => {
-//             // Check if the comment exists
-//             if (post.comments.filter(comment => comment._id.toString() === req.params.comment_id).length === 0)
-//                 return res.status(404).json({ commentnotexists: 'Comment does not exist' })
+        const post = await Post.findById(postId)
+        const comment = post.comments.find(comment => comment.id === commentId)
 
-//             // Get remove index
-//             const removeIndex = post.comments
-//                 .map(item => item._id.toString())
-//                 .indexOf(req.params.comment_id)
+        if (!comment) {
+            return res.status(STATUS_404).json({ msg: COMMENT_DOES_NOT_EXISTS })
+        }
 
-//             // Splice out of array
-//             post.comments.splice(removeIndex, 1)
+        if (comment.user.toString() !== userId) {
+            return res.status(STATUS_401).json({ msg: USER_NOT_AUTHORIZED })
+        }
 
-//             post.save().then(post => res.json(post))
-//         })
-//         .catch(err => res.status(404).json({ postnotfound: 'Post not found' }))
-// })
+        const commentsIdsArray = post.comments.map(comment => comment._id.toString())
+        const removeIndex = commentsIdsArray.indexOf(commentId)
+
+        post.comments.splice(removeIndex, 1)
+        await post.save()
+        res.json(post.comments)
+    } catch(err) {
+        console.log(err.message)
+        if (err.kind === 'ObjectId') {
+            return res.status(STATUS_404).json({ msg: NO_POST_FOUND })
+        }
+        res.status(STATUS_500).send(INTERNAL_ERROR)
+    }
+})
 
 module.exports = router
