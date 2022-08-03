@@ -3,6 +3,7 @@ const server = require('../../../server')
 const db = require("../../../config/db")
 const userData = require('../../../mock/users/userData')
 const crypto = require("crypto")
+const { getErrorMessages } = require('../../../utils/testUtils')
 
 const {
     STATUS_200,
@@ -13,64 +14,51 @@ const {
     USER_ALREADY_EXISTS
 } = require("../../../commons/constants")
 
-describe('Post api/users', () => {
+describe('Testing api/users/register', () => {
 
-    describe('Register an user', () => {
+    const api = '/api/users/register'
+    let newUser = {}
 
-        const api = '/api/users/register'
-        let newUser = {}
+    
 
-        const getErrorMessage = (response, msgErrors) => {
-            if (msgErrors) {
-                let messages = []
-                for(let i = 0; i < msgErrors; i++) {
-                    messages.push(JSON.parse(response.text).errors[i].msg)
-                }
-                return  messages
-            }
+    it('should register a new user', async () => {
+        const id = crypto.randomBytes(20).toString('hex')
+        newUser = {
+            "name": userData.newUser.name,
+            "email": `${id}@email.com`,
+            "password": userData.newUser.password
         }
 
-        it('should respond with a 200 status code', async () => {
-            const id = crypto.randomBytes(20).toString('hex')
-            newUser = {
-                "name": userData.newUser.name,
-                "email": `${id}@email.com`,
-                "password": userData.newUser.password
-            }
+        const response = await request(server.app).post(api)
+            .send(newUser)
+        expect(response.statusCode).toBe(STATUS_200)
+    })
 
-            const response = await request(server.app).post(api)
-                .send(newUser)
-            expect(response.statusCode).toBe(STATUS_200)
-        })
+    it('should fail creating an already registered user', async () => {
+        const alreadyRegisteredUser = newUser
+        const response = await request(server.app).post(api)
+            .send(alreadyRegisteredUser)
+        const errorsQuantity = 1
+        const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
-        it('should fail when creating an already registered user', async () => {
-            const alreadyRegisteredUser = newUser
-            const response = await request(server.app).post(api)
-                .send(alreadyRegisteredUser)
-            const msgErrors = 1
-            const errorMsgsArray = getErrorMessage(response, msgErrors)
+        expect(response.statusCode).toBe(STATUS_400)
+        expect(errorMsgsArray[0]).toEqual(USER_ALREADY_EXISTS)
+    })
 
-            expect(response.statusCode).toBe(STATUS_400)
-            expect(errorMsgsArray[0]).toEqual(USER_ALREADY_EXISTS)
-        })
+    it('should fail when sending an empty body request', async () => {
+        const response = await request(server.app).post(api)
+            .send({})
+        const errorsQuantity = 3
+        const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
-        it('should fail when sending and empty object', async () => {
-            const response = await request(server.app).post(api)
-                .send({})
-            const msgErrors = 3
-            const errorMsgsArray = getErrorMessage(response, msgErrors)
+        expect(response.statusCode).toBe(STATUS_400)
+        expect(errorMsgsArray[0]).toEqual(NAME_REQUIRED)
+        expect(errorMsgsArray[1]).toEqual(EMAIL_INVALID)
+        expect(errorMsgsArray[2]).toEqual(PWD_INVALID)
+    })
 
-            expect(response.statusCode).toBe(STATUS_400)
-            expect(errorMsgsArray[0]).toEqual(NAME_REQUIRED)
-            expect(errorMsgsArray[1]).toEqual(EMAIL_INVALID)
-            expect(errorMsgsArray[2]).toEqual(PWD_INVALID)
-        })
-
-        afterAll(async () => {
-            await db.closeDBConnection()
-            server.listener.close()
-        })
-
+    afterAll(async () => {
+        await db.closeDBConnection()
     })
 
 })

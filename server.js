@@ -20,7 +20,11 @@ app.get('/', (req, res) => res.send('API Running'))
 
 const port = process.env.PORT || SERVER_PORT
 
-const listener = app.listen(port, () => console.log(`Server running on port ${port}`))
+let listener 
+
+if (require.main === module) {
+    listener = app.listen(port, () => console.log(`Server running on port ${port}`))
+}
 
 module.exports = {
     listener,

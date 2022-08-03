@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const auth_middleware = require('../../../middleware/auth')
 const User = require('../../../models/User')
 const { check, validationResult } = require('express-validator')
 const userService = require('../../../services/userService')
@@ -13,19 +12,6 @@ const {
     EMAIL_INVALID,
     INVALID_CREDENTIALS
 } = require("../../../commons/constants")
-
-// @router  GET api/auth
-// @dsc     Test route
-// @access  Public 
-router.get('/', auth_middleware, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password')
-        res.json(user)
-    } catch (err) {
-        console.error(err.message)
-        res.status(STATUS_500).send(INTERNAL_ERROR)
-    }
-})
 
 // @router  POST api/auth
 // @dsc     Authenticate user & get token
