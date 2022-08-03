@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const config = require('config')
 const db = config.get('mongoURI')
-
-const EXIT_WITH_FAILURE = 1
+const { EXIT_WITH_FAILURE } = require('../commons/constants')
 
 const getDBConnection = async () => {
     try {

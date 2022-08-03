@@ -4,6 +4,8 @@ const STATUS_401 = 401
 const STATUS_404 = 404
 const STATUS_500 = 500
 const INTERNAL_ERROR = 'Internal server error'
+const EXIT_WITH_FAILURE = 1
+const SERVER_PORT = 5000
 
 // users route
 const NAME_REQUIRED = 'Name is required'
@@ -46,6 +48,8 @@ module.exports = {
     STATUS_404,
     STATUS_500,
     INTERNAL_ERROR,
+    EXIT_WITH_FAILURE,
+    SERVER_PORT,
     NAME_REQUIRED,
     EMAIL_INVALID,
     PWD_INVALID,
