@@ -1,4 +1,3 @@
-const request = require('supertest')
 const server = require('../../../server')
 const db = require("../../../config/db")
 const userData = require('../../../mock/users/userData')
