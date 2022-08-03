@@ -3,7 +3,7 @@ const server = require('../../../server')
 const db = require("../../../config/db")
 const userData = require('../../../mock/users/userData')
 const crypto = require("crypto")
-const { getErrorMessages } = require('../../../utils/testUtils')
+const { getErrorMessages, fetchData } = require('../../../utils/testUtils')
 
 const {
     STATUS_200,
@@ -16,7 +16,12 @@ const {
 
 describe('Testing api/users/register', () => {
 
-    const api = '/api/users/register'
+    let requestData = {
+        server: server.app,
+        api: '/api/users/register',
+        method: 'post',
+        requestBody: {}
+    }
     let newUser = {}
 
     it('should register a new user', async () => {
@@ -26,16 +31,16 @@ describe('Testing api/users/register', () => {
             "email": `${id}@email.com`,
             "password": userData.newUser.password
         }
+        requestData.requestBody = newUser
 
-        const response = await request(server.app).post(api)
-            .send(newUser)
+        const response = await fetchData(requestData)
         expect(response.statusCode).toBe(STATUS_200)
     })
 
     it('should fail creating an already registered user', async () => {
         const alreadyRegisteredUser = newUser
-        const response = await request(server.app).post(api)
-            .send(alreadyRegisteredUser)
+        requestData.requestBody = alreadyRegisteredUser
+        const response = await fetchData(requestData)
         const errorsQuantity = 1
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
@@ -44,8 +49,8 @@ describe('Testing api/users/register', () => {
     })
 
     it('should fail when sending an empty body request', async () => {
-        const response = await request(server.app).post(api)
-            .send({})
+        requestData.requestBody = {}
+        const response = await fetchData(requestData)
         const errorsQuantity = 3
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
