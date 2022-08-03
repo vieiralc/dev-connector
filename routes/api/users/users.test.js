@@ -19,8 +19,6 @@ describe('Testing api/users/register', () => {
     const api = '/api/users/register'
     let newUser = {}
 
-    
-
     it('should register a new user', async () => {
         const id = crypto.randomBytes(20).toString('hex')
         newUser = {
