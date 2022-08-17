@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../../../models/User')
 const { check, validationResult } = require('express-validator')
-const userService = require('../../../services/userService')
+const userService = require('../../../services/user/userService')
 
 const { 
     STATUS_400, 
