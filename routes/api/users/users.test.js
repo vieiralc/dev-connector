@@ -1,8 +1,8 @@
 const server = require('../../../server')
-const db = require("../../../config/db")
+const db = require('../../../config/db')
 const userData = require('../../../mock/users/userData.mock')
-const crypto = require("crypto")
-const { getErrorMessages, fetchData } = require('../../../utils/testUtils')
+const crypto = require('crypto')
+const { getErrorMessages, sendRequest } = require('../../../utils/utils')
 
 const {
     STATUS_200,
@@ -11,7 +11,7 @@ const {
     EMAIL_INVALID,
     PWD_INVALID,
     USER_ALREADY_EXISTS
-} = require("../../../commons/constants")
+} = require('../../../commons/constants')
 
 describe('Testing api/users/register', () => {
 
@@ -19,7 +19,11 @@ describe('Testing api/users/register', () => {
         server: server.app,
         api: '/api/users/register',
         method: 'post',
-        requestBody: {}
+        requestBody: {},
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': ''
+        }
     }
     let newUser = {}
 
@@ -32,14 +36,14 @@ describe('Testing api/users/register', () => {
         }
         requestData.requestBody = newUser
 
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         expect(response.statusCode).toBe(STATUS_200)
     })
 
     it('should fail creating an already registered user', async () => {
         const alreadyRegisteredUser = newUser
         requestData.requestBody = alreadyRegisteredUser
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         const errorsQuantity = 1
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
@@ -49,7 +53,7 @@ describe('Testing api/users/register', () => {
 
     it('should fail when sending an empty body request', async () => {
         requestData.requestBody = {}
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         const errorsQuantity = 3
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
