@@ -2,7 +2,7 @@ const server = require('../../../server')
 const db = require("../../../config/db")
 const userData = require('../../../mock/users/userData.mock')
 const authMockData = require('../../../mock/auth/auth.mock')
-const { getErrorMessages, fetchData } = require('../../../utils/testUtils')
+const { getErrorMessages, sendRequest } = require('../../../utils/utils')
 
 const { 
     STATUS_200, 
@@ -21,7 +21,11 @@ describe('Testing api/auth', () => {
         server: server.app, 
         api: api,
         method: 'post',
-        requestBody: {}
+        requestBody: {},
+        headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': ''
+        }
     }
 
     it('should authenticate user', async () => {
@@ -31,7 +35,7 @@ describe('Testing api/auth', () => {
         }
         requestData.requestBody = requestBody
 
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         expect(response.statusCode).toBe(STATUS_200)
     })
 
@@ -42,7 +46,7 @@ describe('Testing api/auth', () => {
         }
         requestData.requestBody = requestBody
 
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         const errorsQuantity = 1
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
@@ -54,7 +58,7 @@ describe('Testing api/auth', () => {
         const requestBody = authMockData.unregisteredUser
         requestData.requestBody = requestBody
         
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         const errorsQuantity = 1
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 
@@ -66,7 +70,7 @@ describe('Testing api/auth', () => {
         const requestBody = {}
         requestData.requestBody = requestBody
         
-        const response = await fetchData(requestData)
+        const response = await sendRequest(requestData)
         const errorsQuantity = 2
         const errorMsgsArray = getErrorMessages(response, errorsQuantity)
 

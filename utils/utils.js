@@ -10,15 +10,23 @@ const getErrorMessages = (response, errorsQuantity) => {
     }
 }
 
-const fetchData = async ({server, api, method, requestBody}) => {
+const sendRequest = async ({server, api, method, requestBody, headers}) => {
     const response = await request(server)
         [method](api)
         .send(requestBody)
+        .set(headers)
 
     return response
 }
 
+const findIndexOf = (array, id) => {
+    const index = array.map(item => item.id)
+        .indexOf(id)
+    return index
+}
+
 module.exports = {
     getErrorMessages,
-    fetchData
+    sendRequest,
+    findIndexOf
 }
