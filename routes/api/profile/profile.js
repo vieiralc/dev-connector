@@ -214,8 +214,6 @@ router.delete('/education/:education_id', auth_middleware, async (req, res) => {
 // @access  Private
 router.delete('/', auth_middleware, async (req, res) => {
     try {
-        // @todo - remove profile
-
         await Profile.findOneAndRemove({ user: req.user.id })
         await User.findOneAndRemove({ _id: req.user.id })
         
