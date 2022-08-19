@@ -82,6 +82,15 @@ const profileData = {
                 title: 'education2'
             }
         ]
+    },
+    testUser: {
+        name: 'test user',
+        email: 'test_user@email.com',
+        password: '123456'
+    },
+    testIds: {
+        wronUserId: '6288d70b5028ba2090900000',
+        wrongFormatId: 'abcde'
     }
 }
 

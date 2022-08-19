@@ -227,6 +227,7 @@ router.delete('/', auth_middleware, async (req, res) => {
 // @router  GET api/profile/github/:username
 // @dsc     Get user repos from github
 // @access  Public
+/* istanbul ignore next */
 router.get('/github/:username', async (req, res) => {
     try {
         const options = {
