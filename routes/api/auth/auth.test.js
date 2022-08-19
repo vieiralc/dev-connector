@@ -2,6 +2,7 @@ const server = require('../../../server')
 const db = require("../../../config/db")
 const userData = require('../../../mock/users/userData.mock')
 const authMockData = require('../../../mock/auth/auth.mock')
+const requestData = require('../../../mock/requestData/requestData.mock')
 const { getErrorMessages, sendRequest } = require('../../../utils/utils')
 
 const { 
@@ -17,16 +18,10 @@ describe('Testing api/auth', () => {
     const api = '/api/auth'
     const alreadyRegisteredUser = userData.alreadyRegisteredUser
 
-    let requestData = {
-        server: server.app, 
-        api: api,
-        method: 'post',
-        requestBody: {},
-        headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': ''
-        }
-    }
+    beforeAll(() => {
+        requestData.api = api
+        requestData.method = 'post'
+    })
 
     it('should authenticate user', async () => {
         const requestBody = {

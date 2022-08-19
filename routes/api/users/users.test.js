@@ -1,6 +1,7 @@
 const server = require('../../../server')
 const db = require('../../../config/db')
 const userData = require('../../../mock/users/userData.mock')
+const requestData = require('../../../mock/requestData/requestData.mock')
 const crypto = require('crypto')
 const { getErrorMessages, sendRequest } = require('../../../utils/utils')
 
@@ -15,17 +16,12 @@ const {
 
 describe('Testing api/users/register', () => {
 
-    let requestData = {
-        server: server.app,
-        api: '/api/users/register',
-        method: 'post',
-        requestBody: {},
-        headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': ''
-        }
-    }
     let newUser = {}
+
+    beforeAll(() => {
+        requestData.api = '/api/users/register'
+        requestData.method = 'post'
+    })
 
     it('should register a new user', async () => {
         const id = crypto.randomBytes(20).toString('hex')
