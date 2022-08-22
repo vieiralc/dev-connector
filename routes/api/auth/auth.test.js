@@ -9,17 +9,27 @@ const {
     STATUS_400,
     EMAIL_INVALID,
     PASSWORD_REQUIRED,
-    INVALID_CREDENTIALS 
+    INVALID_CREDENTIALS,
+    USER_DELETED
 } = require('../../../commons/constants')
 
 describe('Testing api/auth', () => {
 
     const api = '/api/auth'
     const alreadyRegisteredUser = userData.alreadyRegisteredUser
+    let token = null
 
-    beforeAll(() => {
-        requestData.api = api
+    beforeAll(async () => {
+        // should register user
+        requestData.api = '/api/users/register'
         requestData.method = 'post'
+        requestData.requestBody = alreadyRegisteredUser
+
+        const response = await sendRequest(requestData)
+        token = JSON.parse(response.text).token
+        expect(response.statusCode).toBe(STATUS_200)
+
+        requestData.api = api
     })
 
     it('should authenticate user', async () => {
@@ -74,6 +84,15 @@ describe('Testing api/auth', () => {
     })
 
     afterAll(async () => {
+        // should delete test user
+        requestData.api = '/api/profile'
+        requestData.method = 'delete'
+        requestData.headers['x-auth-token'] = token
+
+        const response = await sendRequest(requestData)
+        expect(response.statusCode).toEqual(STATUS_200)
+        expect(JSON.parse(response.text).msg).toEqual(USER_DELETED)
+
         await db.closeDBConnection()
     })
 })
