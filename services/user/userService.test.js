@@ -1,3 +1,4 @@
+const db = require('../../config/db')
 const userService = require('./userService')
 
 describe('User service test', () => {
@@ -40,6 +41,10 @@ describe('User service test', () => {
         const response = await userService
             .checkPassword(testData.password, encryptedPassword)
         expect(response).toBe(true)
+    })
+
+    afterAll(async () => {
+        await db.closeDBConnection()
     })
 
 })

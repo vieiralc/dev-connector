@@ -89,8 +89,7 @@ const profileData = {
         password: '123456'
     },
     testIds: {
-        wronUserId: '6288d70b5028ba2090900000',
-        wrongFormatId: 'abcde'
+        wronUserId: '6288d70b5028ba2090900000'
     }
 }
 

@@ -1,3 +1,4 @@
+const db = require('../../config/db')
 const profileService = require('./profileService')
 const profileData = require('../../mock/profile/profile.mock')
 
@@ -79,10 +80,8 @@ describe('Profile service test', () => {
         expect(result[0].id).toEqual(educationId)
     })
 
-    it('should find index of element', () => {
-        const arr = [ { id: 'foo' }, { id: 'baz'}, { id: 'abcd' } ]
-        const result = profileService.findIndexOf(arr, 'abcd')
-        expect(result).toEqual(2)
+    afterAll(async () => {
+        await db.closeDBConnection()
     })
 
 })

@@ -1,4 +1,3 @@
-const server = require('../../../server')
 const db = require('../../../config/db')
 const userData = require('../../../mock/users/userData.mock')
 const requestData = require('../../../mock/requestData/requestData.mock')

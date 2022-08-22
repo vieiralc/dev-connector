@@ -1,4 +1,3 @@
-const server = require('../../../server')
 const db = require('../../../config/db')
 const profileData = require('../../../mock/profile/profile.mock')
 const requestData = require('../../../mock/requestData/requestData.mock')
@@ -122,16 +121,6 @@ describe('Testing api/profile', () => {
 
     it('should fail getting user profile', async () => {
         requestData.api = `/api/profile/user/${profileData.testIds.wronUserId}`
-        requestData.method = 'get'
-
-        const response = await sendRequest(requestData)
-        const parsedResponse = JSON.parse(response.text)
-        expect(response.statusCode).toEqual(STATUS_400)
-        expect(parsedResponse.msg).toEqual(NO_PROFILE_FOUND)
-    })
-
-    it('should fail because of wrong format id when getting user by id', async () => {
-        requestData.api = `/api/profile/user/${profileData.testIds.wrongFormatId}`
         requestData.method = 'get'
 
         const response = await sendRequest(requestData)

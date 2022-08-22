@@ -1,3 +1,5 @@
+const { findIndexOf } = require('../../utils/utils')
+
 const createProfileObject = requestData => {
     const {
         company,
@@ -86,17 +88,10 @@ const findEducationAndRemove = (profile, educationId) => {
     return profile.education.splice(removeIndex, 1)
 }
 
-const findIndexOf = (array, id) => {
-    const index = array.map(item => item.id)
-        .indexOf(id)
-    return index
-}
-
 module.exports = profileService = {
     createProfileObject,
     createExperienceObject,
     findExperienceAndRemove,
     findEducationAndRemove,
-    createEducationObject,
-    findIndexOf
+    createEducationObject
 }
