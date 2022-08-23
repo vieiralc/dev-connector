@@ -8,7 +8,11 @@ const postData = {
         text: 'my awesome post'
     },
     wrongPostId: '62d5f947967be52e5c600000',
-    wrongIdFormat: '1234'
+    wrongIdFormat: '1234',
+    comment: {
+        text: 'This is a comment from fulanos'
+    },
+    wrongCommentId: '62e08b2920ceaa11d8880000'
 }
 
 module.exports = postData
