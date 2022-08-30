@@ -10,12 +10,14 @@ const {
     NAME_REQUIRED,
     EMAIL_INVALID,
     PWD_INVALID,
-    USER_ALREADY_EXISTS
+    USER_ALREADY_EXISTS,
+    USER_DELETED
 } = require('../../../commons/constants')
 
 describe('Testing api/users/register', () => {
 
     let newUser = {}
+    let token = null
 
     beforeAll(() => {
         requestData.api = '/api/users/register'
@@ -32,6 +34,7 @@ describe('Testing api/users/register', () => {
         requestData.requestBody = newUser
 
         const response = await sendRequest(requestData)
+        token = JSON.parse(response.text).token
         expect(response.statusCode).toBe(STATUS_200)
     })
 
@@ -59,6 +62,15 @@ describe('Testing api/users/register', () => {
     })
 
     afterAll(async () => {
+        // should delete test user
+        requestData.api = '/api/profile'
+        requestData.method = 'delete'
+        requestData.headers['x-auth-token'] = token
+
+        const response = await sendRequest(requestData)
+        expect(response.statusCode).toEqual(STATUS_200)
+        expect(JSON.parse(response.text).msg).toEqual(USER_DELETED)
+
         await db.closeDBConnection()
     })
 
