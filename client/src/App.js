@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Provider } from 'react-redux'
-import store from './store'
+import store from './redux/store'
 
 import Navbar from './components/layout/Navbar'
 import Landing from './components/layout/Landing'
