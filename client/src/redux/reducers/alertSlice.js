@@ -10,7 +10,7 @@ export const alertSlice = createSlice({
         setAlert: (state, action) => {
             const id = uuidv4()
             const { message, alertType } = action.payload
-            state.alerts.push({ id, message, alertType  })
+            state.alerts.unshift({ id, message, alertType  })
         },
         removeAlert: (state, action) => {
             state.alerts = state.alerts.filter(alert => alert.id !== action.payload.id)

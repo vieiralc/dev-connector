@@ -6,7 +6,7 @@ import { setAlert } from '../../redux/reducers/alertSlice'
 
 const Register = () => {
 
-    const dispatch = useDispatch()  
+    const dispatch = useDispatch() 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
