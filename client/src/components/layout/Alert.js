@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { ALERT_TIMEOUT } from '../../constants/constants'
 import { removeAlert } from '../../redux/reducers/alertSlice'
 
 const Alert = () => {
@@ -11,7 +12,7 @@ const Alert = () => {
             const lastAlert = alerts[0]
             setTimeout(() => {
                 dispatch(removeAlert({ id: lastAlert.id }))
-            }, 5000)
+            }, ALERT_TIMEOUT)
         }
     }, [alerts])
 
