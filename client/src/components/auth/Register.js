@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
-//import axios from 'axios'
+import { registerNewUser } from '../../redux/thunks/registerUser'
 
 const Register = () => {
 
@@ -23,25 +23,9 @@ const Register = () => {
         e.preventDefault()
         if (password !== password2)
             dispatch(setAlert({ message: 'Passwords do not match', alertType: 'danger' }))
-        else {
-            console.table(formData)
-            // const newUser = { name, email, password }
-            
-            // try {
-            //     const config = {
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         }
-            //     }
+        else 
+            dispatch(registerNewUser({ name, email, password }))
 
-            //     const body = JSON.stringify(newUser)
-
-            //     const res = await axios.post('/api/users/register', body, config)
-            //     console.log(res.data)
-            // } catch (error) {
-            //     console.error(error.response.data)
-            // }
-        }
     }
 
     return (
