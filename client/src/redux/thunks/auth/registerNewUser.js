@@ -1,6 +1,7 @@
-import { setAlert } from '../reducers/alertSlice'
-import { registerSuccess, registerFail } from '../reducers/authSlice'
+import { setAlert } from '../../reducers/alertSlice'
+import { registerSuccess, registerFail } from '../../reducers/authSlice'
 import axios from 'axios'
+import { loadUser } from './loadUser'
 
 export function registerNewUser(newUserData) {
     return async function registerNewUser(dispatch, getState) {
@@ -12,6 +13,7 @@ export function registerNewUser(newUserData) {
         try {
             const response = await axios.post('/api/users/register', body, config)
             dispatch(registerSuccess(response.data))
+            dispatch(loadUser())
         } catch (err) {
 
             if (err.response.status === 500)

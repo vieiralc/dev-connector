@@ -1,6 +1,6 @@
-import { userLoaded, authFailed } from '../reducers/authSlice'
+import { userLoaded, authFailed } from '../../reducers/authSlice'
 import axios from 'axios'
-import setAuthToken from '../../utils/setAuthToken'
+import setAuthToken from '../../../utils/setAuthToken'
 
 export function loadUser() {
     return async function loadUser(dispatch, getState) {

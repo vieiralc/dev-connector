@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
-import { registerNewUser } from '../../redux/thunks/registerUser'
+import { registerNewUser } from '../../redux/thunks/auth/registerNewUser'
 
 const Register = () => {
 

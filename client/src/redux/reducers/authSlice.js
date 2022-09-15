@@ -12,7 +12,6 @@ export const authSlice = createSlice({
         registerSuccess: (state, { payload }) => {
             localStorage.setItem('token', payload.token)
             state.token = payload.token
-            state.isAuthenticated = true
             state.loading = false
         },
         registerFail: (state, action) => {

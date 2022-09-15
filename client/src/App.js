@@ -11,7 +11,7 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 
 import setAuthToken from './utils/setAuthToken'
-import { loadUser } from './redux/thunks/loadUser'
+import { loadUser } from './redux/thunks/auth/loadUser'
 
 
 import './App.css'
