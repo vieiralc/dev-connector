@@ -19,8 +19,8 @@ const Alert = () => {
     return (
         alerts.length > 0 ? (
             alerts.map(alert => (
-                <section className='alert-container'>
-                    <div key={alert.id} className={`alert alert-${alert.alertType}`}>
+                <section key={alert.id} className='alert-container'>
+                    <div className={`alert alert-${alert.alertType}`}>
                         { alert.message }
                     </div>
                 </section>
