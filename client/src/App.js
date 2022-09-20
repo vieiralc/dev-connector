@@ -29,16 +29,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <Navbar/>
+      <Alert/>
       <Routes>
         <Route exact path='/' element={<Landing />}/>
+        <Route exact path='/register' element={<Register />}/>
+        <Route exact path='/login' element={<Login />}/>
       </Routes>
-      <section className='container'>
-        <Alert/>
-        <Routes>
-          <Route exact path='/register' element={<Register />}/>
-          <Route exact path='/login' element={<Login />}/>
-        </Routes>
-      </section>
     </Provider>
   )
 }
