@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
-import { registerNewUser } from '../../redux/thunks/auth/registerNewUser'
+import { registerNewUser } from '../../redux/actions/auth/registerNewUser'
 
 const Register = () => {
 

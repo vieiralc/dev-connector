@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../../redux/thunks/auth/loginUser'
+import { loginUser } from '../../redux/actions/auth/loginUser'
 
 function Login() {
 
