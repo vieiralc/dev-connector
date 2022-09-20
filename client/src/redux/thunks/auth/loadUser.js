@@ -1,4 +1,4 @@
-import { userLoaded, authFailed } from '../../reducers/authSlice'
+import { userLoaded, authFail } from '../../reducers/authSlice'
 import axios from 'axios'
 import setAuthToken from '../../../utils/setAuthToken'
 
@@ -13,7 +13,7 @@ export function loadUser() {
 
             dispatch(userLoaded({ user: response.data }))
         } catch(err) {
-            dispatch(authFailed())
+            dispatch(authFail())
         }
     }
 }

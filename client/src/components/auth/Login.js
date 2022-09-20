@@ -1,8 +1,11 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../../redux/thunks/auth/loginUser'
 
 function Login() {
 
+    const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -15,7 +18,7 @@ function Login() {
 
     const onSubmit = e => {
         e.preventDefault()
-        console.table(formData)
+        dispatch(loginUser(email, password))
     }
 
     return (

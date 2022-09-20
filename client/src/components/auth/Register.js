@@ -1,14 +1,12 @@
-import React, { Fragment, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
 import { registerNewUser } from '../../redux/thunks/auth/registerNewUser'
 
 const Register = () => {
 
     const dispatch = useDispatch() 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
-    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -27,10 +25,6 @@ const Register = () => {
             dispatch(setAlert({ message: 'Passwords do not match', alertType: 'danger' }))
         else 
             dispatch(registerNewUser({ name, email, password }))
-    }
-
-    if (isAuthenticated) {
-        navigate('/dashboard')
     }
 
     return (

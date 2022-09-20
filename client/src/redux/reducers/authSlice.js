@@ -9,36 +9,30 @@ export const authSlice = createSlice({
         user: null
     }, 
     reducers: {
-        registerSuccess: (state, { payload }) => {
+        authSuccess: (state, { payload }) => {
             localStorage.setItem('token', payload.token)
             state.token = payload.token
             state.loading = false
         },
-        registerFail: (state, action) => {
+        authFail: (state, action) => {
             localStorage.removeItem('token')
             state.token = null
             state.isAuthenticated = false
             state.loading = false
+            state.user = null
         },
         userLoaded: (state, { payload }) => {
             state.isAuthenticated = true
             state.loading = false
             state.user = payload.user
-        },
-        authFailed: (state, action) => {
-            localStorage.removeItem('token')
-            state.token = null
-            state.isAuthenticated = false
-            state.loading = false
         }
     }
 })
 
 export const { 
-    registerSuccess, 
-    registerFail,
-    userLoaded,
-    authFailed
+    authSuccess, 
+    authFail,
+    userLoaded
 } = authSlice.actions
 
 export default authSlice.reducer

@@ -1,16 +1,16 @@
-import { setAlert } from '../../reducers/alertSlice'
-import { authSuccess, authFail } from '../../reducers/authSlice'
-import axios from 'axios'
-import { defaultHeaders } from '../../../utils/defaultHeaders'
-import { loadUser } from './loadUser'
+import { setAlert } from "../../reducers/alertSlice"
+import axios from "axios"
+import { defaultHeaders } from "../../../utils/defaultHeaders"
+import { loadUser } from "./loadUser"
+import { authSuccess, authFail } from "../../reducers/authSlice"
 
-export function registerNewUser(newUserData) {
-    return async function registerNewUser(dispatch, getState) {
-        
-        const body = JSON.stringify(newUserData)
+export function loginUser(email, password) {
+    return async function loginUser(dispatch, getState) {
+
+        const body = JSON.stringify({ email, password })
 
         try {
-            const response = await axios.post('/api/users/register', body, defaultHeaders)
+            const response = await axios.post('/api/auth', body, defaultHeaders)
             dispatch(authSuccess(response.data))
             dispatch(loadUser())
         } catch (err) {
