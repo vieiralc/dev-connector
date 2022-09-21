@@ -10,7 +10,7 @@ export function loginUser(email, password) {
         const body = JSON.stringify({ email, password })
 
         try {
-            const response = await axios.post('/api/auth', body, defaultHeaders)
+            const response = await axios.post('api/auth', body, defaultHeaders)
             dispatch(authSuccess(response.data))
             dispatch(loadUser())
         } catch (err) {

@@ -9,7 +9,7 @@ export function loadUser() {
         }
 
         try {
-            const response = await axios.get('/api/auth')
+            const response = await axios.get('api/auth')
 
             dispatch(userLoaded({ user: response.data }))
         } catch(err) {

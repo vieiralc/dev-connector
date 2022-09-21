@@ -10,7 +10,7 @@ export function registerNewUser(newUserData) {
         const body = JSON.stringify(newUserData)
 
         try {
-            const response = await axios.post('/api/users/register', body, defaultHeaders)
+            const response = await axios.post('api/users/register', body, defaultHeaders)
             dispatch(authSuccess(response.data))
             dispatch(loadUser())
         } catch (err) {
