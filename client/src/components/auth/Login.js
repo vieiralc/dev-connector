@@ -1,8 +1,11 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../../redux/actions/auth/loginUser'
 
 function Login() {
 
+    const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -15,11 +18,11 @@ function Login() {
 
     const onSubmit = e => {
         e.preventDefault()
-        console.table(formData)
+        dispatch(loginUser(email, password))
     }
 
     return (
-        <Fragment>
+        <section className='container'>
             <h1 className='large text-primary'>Sign In</h1>
             <p className='lead'>
                 <i className='fas fa-user'></i> Sign Into Your Account
@@ -51,7 +54,7 @@ function Login() {
             <p className='my-1'>
                 Don't have an account? <Link to='/register'>Register</Link>
             </p>
-        </Fragment>
+        </section>
     )
 }
 
