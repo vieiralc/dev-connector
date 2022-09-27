@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../redux/actions/auth/loginUser'
 
 function Login() {
 
     const dispatch = useDispatch()
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -20,6 +23,12 @@ function Login() {
         e.preventDefault()
         dispatch(loginUser(email, password))
     }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard")
+        }
+    }, [isAuthenticated])
 
     return (
         <section className='container'>

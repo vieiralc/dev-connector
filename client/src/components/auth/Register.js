@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
 import { registerNewUser } from '../../redux/actions/auth/registerNewUser'
 
 const Register = () => {
 
     const dispatch = useDispatch() 
+    const isAuthenticated = useDispatch(state => state.auth.isAuthenticated)
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -21,11 +23,18 @@ const Register = () => {
 
     const onSubmit = async e => {
         e.preventDefault()
-        if (password !== password2)
+        if (password !== password2) {
             dispatch(setAlert({ message: 'Passwords do not match', alertType: 'danger' }))
-        else 
+        } else {
             dispatch(registerNewUser({ name, email, password }))
+        }
     }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard")
+        }
+    }, [isAuthenticated])
 
     return (
         <section className='container'>

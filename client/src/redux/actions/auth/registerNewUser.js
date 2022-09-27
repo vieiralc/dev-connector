@@ -1,5 +1,5 @@
 import { setAlert } from '../../reducers/alertSlice'
-import { authSuccess, authFail } from '../../reducers/authSlice'
+import { authSuccess, clearUserData } from '../../reducers/authSlice'
 import axios from 'axios'
 import { defaultHeaders } from '../../../utils/defaultHeaders'
 import { loadUser } from './loadUser'
@@ -21,7 +21,7 @@ export function registerNewUser(newUserData) {
             if (errors)
                 errors.forEach(error => dispatch(setAlert({ message: error.msg, alertType: 'danger' })))
             
-            dispatch(authFail())
+            dispatch(clearUserData())
         }
     }
 }

@@ -2,7 +2,7 @@ import { setAlert } from "../../reducers/alertSlice"
 import axios from "axios"
 import { defaultHeaders } from "../../../utils/defaultHeaders"
 import { loadUser } from "./loadUser"
-import { authSuccess, authFail } from "../../reducers/authSlice"
+import { authSuccess, clearUserData } from "../../reducers/authSlice"
 
 export function loginUser(email, password) {
     return async function loginUser(dispatch, getState) {
@@ -21,7 +21,7 @@ export function loginUser(email, password) {
             if (errors)
                 errors.forEach(error => dispatch(setAlert({ message: error.msg, alertType: 'danger' })))
             
-            dispatch(authFail())
+            dispatch(clearUserData())
         }
     }
 }

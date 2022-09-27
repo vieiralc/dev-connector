@@ -14,7 +14,7 @@ export const authSlice = createSlice({
             state.token = payload.token
             state.loading = false
         },
-        authFail: (state, action) => {
+        clearUserData: (state, action) => {
             localStorage.removeItem('token')
             state.token = null
             state.isAuthenticated = false
@@ -31,7 +31,7 @@ export const authSlice = createSlice({
 
 export const { 
     authSuccess, 
-    authFail,
+    clearUserData,
     userLoaded
 } = authSlice.actions
 
