@@ -6,9 +6,18 @@ import { registerNewUser } from '../../redux/actions/auth/registerNewUser'
 
 const Register = () => {
 
-    const dispatch = useDispatch() 
-    const isAuthenticated = useDispatch(state => state.auth.isAuthenticated)
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+    const loading = useSelector(state => state.auth.loading)
     const navigate = useNavigate()
+    const dispatch = useDispatch() 
+
+    useEffect(() => {
+        if (isAuthenticated && !loading) {
+            navigate("/dashboard")
+        } 
+    }, [isAuthenticated, loading])
+    
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,11 +39,9 @@ const Register = () => {
         }
     }
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate("/dashboard")
-        }
-    }, [isAuthenticated])
+    if (loading) {
+        return <h1 className='container'>Loading...</h1>
+    }
 
     return (
         <section className='container'>

@@ -5,9 +5,17 @@ import { loginUser } from '../../redux/actions/auth/loginUser'
 
 function Login() {
 
-    const dispatch = useDispatch()
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+    const loading = useSelector(state => state.auth.loading)
+    
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isAuthenticated && !loading) {
+            navigate("/dashboard")
+        } 
+    }, [loading, isAuthenticated])
 
     const [formData, setFormData] = useState({
         email: '',
@@ -24,11 +32,9 @@ function Login() {
         dispatch(loginUser(email, password))
     }
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate("/dashboard")
-        }
-    }, [isAuthenticated])
+    if (loading) {
+        return <h1 className="container">Loading...</h1>
+    }
 
     return (
         <section className='container'>
