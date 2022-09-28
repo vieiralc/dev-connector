@@ -1,6 +1,15 @@
-import React from 'react'
+import { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { getCurrentProfile } from "../../redux/actions/profile/getCurrentProfile"
 
-const Dashboard = props => {
+const Dashboard = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCurrentProfile())
+  }, [])
+
   return (
     <div className='container'>Dashboard</div>
   )
