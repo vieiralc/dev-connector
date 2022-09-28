@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { clearUserData } from "../../redux/reducers/authSlice"
+import { logoutUser } from '../../redux/actions/auth/logoutUser'
 
 const Navbar = () => {
 
@@ -9,11 +9,17 @@ const Navbar = () => {
   const dispatch = useDispatch()
 
   const logout = () => {
-    dispatch(clearUserData())
+    dispatch(logoutUser())
   }
 
   const authLinks = (
     <ul>
+      <li>
+        <Link to="/dashboard">
+          <i className="fas fa-user"></i>{' '}
+          <span className="hide-sm">Dashboard</span>
+        </Link>
+      </li>
       <li>
         <Link onClick={() => logout()}>
           <i className="fas fa-sign-out-alt"></i>{' '}
