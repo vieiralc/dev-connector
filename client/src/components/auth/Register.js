@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAlert } from '../../redux/reducers/alertSlice'
 import { registerNewUser } from '../../redux/actions/auth/registerNewUser'
+import Spinner from '../layout/Spinner'
 
 const Register = () => {
 
@@ -40,7 +41,7 @@ const Register = () => {
     }
 
     if (loading) {
-        return <h1 className='container'>Loading...</h1>
+        return <Spinner/>
     }
 
     return (

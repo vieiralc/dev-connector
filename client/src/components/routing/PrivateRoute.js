@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Spinner from '../layout/Spinner'
 
 const PrivateRoute = ({ children }) => {
 
@@ -8,7 +9,7 @@ const PrivateRoute = ({ children }) => {
     const loading = useSelector(state => state.auth.loading)
 
     if (loading) {
-        return <h1 className="container">Loading...</h1>
+        return <Spinner/>
     }
 
     if (!isAuthenticated && !loading) {

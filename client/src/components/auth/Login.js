@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../redux/actions/auth/loginUser'
+import Spinner from '../layout/Spinner'
 
 function Login() {
 
@@ -33,7 +34,7 @@ function Login() {
     }
 
     if (loading) {
-        return <h1 className="container">Loading...</h1>
+        return <Spinner/>
     }
 
     return (
