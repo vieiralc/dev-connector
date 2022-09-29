@@ -3,7 +3,7 @@ import { clearProfile } from "../../reducers/profileSlice"
 
 export function logoutUser() {
     return async function logoutUser(dispatch, getState) {
-        dispatch(clearUserData())
         dispatch(clearProfile())
+        dispatch(clearUserData())
     }
 }

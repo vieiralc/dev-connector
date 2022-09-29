@@ -21,11 +21,9 @@ export const profileSlice = createSlice({
             state.loading = false
         },
         clearProfile: (state, action) => {
-            state.profile = null,
-            state.profiles = [],
-            state.repos = [],
-            state.loading = true,
-            state.error = {}
+            state.profile = null
+            state.repos = []
+            state.loading = false
         }
     }
 })
