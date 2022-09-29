@@ -3,9 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 export const profileSlice = createSlice({
     name: 'profile',
     initialState: {
-        profile: {
-            name: 'test'
-        },
+        profile: null,
         profiles: [],
         repos: [],
         loading: true,
