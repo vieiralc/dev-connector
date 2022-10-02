@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { createProfile } from '../../redux/actions/profile/createProfile';
+import { useNavigate } from 'react-router-dom';
 
 const CreateProfile = () => {
   const [formData, setFormData] = useState({
@@ -16,13 +18,24 @@ const CreateProfile = () => {
     instagram: '',
     linkedin: '',
   });
-
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const alerts = useSelector((state) => state.alert.alerts);
+
+  useEffect(() => {
+    if (alerts.length) {
+      window.scrollTo(0, 0);
+    }
+  }, [alerts]);
 
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.targe.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const submitForm = () => console.table(formData);
+  const submitForm = (e) => {
+    e.preventDefault();
+    dispatch(createProfile(formData, navigate));
+  };
 
   return (
     <section className='container'>
@@ -32,7 +45,7 @@ const CreateProfile = () => {
         profile stand out
       </p>
       <small>* = required field</small>
-      <form className='form'>
+      <form className='form' onSubmit={(e) => submitForm(e)}>
         <div className='form-group'>
           <select
             name='status'
@@ -194,11 +207,9 @@ const CreateProfile = () => {
           </>
         )}
 
-        <button
-          onClick={() => submitForm()}
-          type='button'
-          className='btn btn-primary my-1'
-        />
+        <button type='submit' className='btn btn-primary my-1'>
+          Save profile
+        </button>
         <a className='btn btn-light my-1' href='dashboard.html'>
           Go Back
         </a>
