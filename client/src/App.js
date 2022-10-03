@@ -12,6 +12,7 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import CreateProfile from './components/profile-forms/CreateProfile';
+import UpdateProfile from './components/profile-forms/UpdateProfile';
 
 import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './redux/actions/auth/loadUser';
@@ -50,6 +51,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <CreateProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path='/update-profile'
+          element={
+            <PrivateRoute>
+              <UpdateProfile />
             </PrivateRoute>
           }
         />

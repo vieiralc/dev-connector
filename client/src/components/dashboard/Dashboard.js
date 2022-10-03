@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCurrentProfile } from '../../redux/actions/profile/getCurrentProfile';
 import Spinner from '../layout/Spinner';
+import DashboardActions from './DashboardActions';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,9 @@ const Dashboard = () => {
     <div className='container'>
       <h1 className='large text-primary'>Dashboard</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i>
-        Welcome {user && user.name}
+        <i className='fas fa-user'></i> Welcome {user && user.name}
       </p>
-      {profile !== null ? <>has profile</> : <>does not have a profile</>}
+      {profile !== null ? <DashboardActions /> : <>does not have a profile</>}
     </div>
   );
 };
