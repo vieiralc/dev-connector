@@ -1,25 +1,19 @@
 import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { setAlert } from '../../reducers/alertSlice';
-import { updateProfile, profileError } from '../../reducers/profileSlice';
+import { updateProfile } from '../../reducers/profileSlice';
 
-export function createProfile(formData, navigate, updatingProfile = false) {
-  return async function createProfile(dispatch, getState) {
+export function addExperience(formData, navigate) {
+  return async function addExperience(dispatch, getState) {
     try {
-      const response = await axios.post(
-        'api/profile',
+      const response = await axios.put(
+        'api/profile/experience',
         formData,
         defaultHeaders
       );
-
       dispatch(updateProfile(response.data));
-
-      const message = updatingProfile ? 'Profile Updated' : 'Profile Created';
-      dispatch(setAlert({ message, alertType: 'success' }));
-
-      if (!updatingProfile) {
-        navigate('/dashboard');
-      }
+      dispatch(setAlert({ message: 'Experience Added', alertType: 'success' }));
+      navigate('/dashboard');
     } catch (err) {
       if (err.response.status === 500) {
         dispatch(
