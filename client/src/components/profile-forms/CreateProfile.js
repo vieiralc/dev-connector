@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createProfile } from '../../redux/actions/profile/createProfile';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const CreateProfile = () => {
   const [formData, setFormData] = useState({
@@ -210,9 +210,9 @@ const CreateProfile = () => {
         <button type='submit' className='btn btn-primary my-1'>
           Save profile
         </button>
-        <a className='btn btn-light my-1' href='dashboard.html'>
+        <Link className='btn btn-light my-1' to='/dashboard'>
           Go Back
-        </a>
+        </Link>
       </form>
     </section>
   );
