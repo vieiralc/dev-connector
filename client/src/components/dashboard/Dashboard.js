@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCurrentProfile } from '../../redux/actions/profile/getCurrentProfile';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
+import Experience from './Experience';
+import Education from './Education';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -22,7 +24,13 @@ const Dashboard = () => {
       <p className='lead'>
         <i className='fas fa-user'></i> Welcome {user && user.name}
       </p>
-      {profile !== null ? <DashboardActions /> : <>does not have a profile</>}
+      {profile !== null ? (
+        <>
+          <DashboardActions /> 
+          <Experience experiences={profile.experience}/>
+          <Education educationArray={profile.education}/>
+        </>
+      ): <>does not have a profile</>}
     </div>
   );
 };
