@@ -31,22 +31,24 @@ const UpdateProfile = () => {
     dispatch(getCurrentProfile());
 
     setFormData({
-      company: profileLoading || !profile.company ? '' : profile.company,
-      website: profileLoading || !profile.website ? '' : profile.website,
-      location: profileLoading || !profile.location ? '' : profile.location,
-      bio: profileLoading || !profile.bio ? '' : profile.bio,
-      status: profileLoading || !profile.status ? '' : profile.status,
+      company: profileLoading || !profile?.company ? '' : profile.company,
+      website: profileLoading || !profile?.website ? '' : profile.website,
+      location: profileLoading || !profile?.location ? '' : profile.location,
+      bio: profileLoading || !profile?.bio ? '' : profile.bio,
+      status: profileLoading || !profile?.status ? '' : profile.status,
       githubusername:
-        profileLoading || !profile.githubusername ? '' : profile.githubusername,
-      skills: profileLoading || !profile.skills ? '' : profile.skills,
-      youtube: profileLoading || !profile.social ? '' : profile.social.youtube,
+        profileLoading || !profile?.githubusername
+          ? ''
+          : profile.githubusername,
+      skills: profileLoading || !profile?.skills ? '' : profile.skills,
+      youtube: profileLoading || !profile?.social ? '' : profile.social.youtube,
       facebook:
-        profileLoading || !profile.social ? '' : profile.social.facebook,
-      twitter: profileLoading || !profile.social ? '' : profile.social.twitter,
+        profileLoading || !profile?.social ? '' : profile.social.facebook,
+      twitter: profileLoading || !profile?.social ? '' : profile.social.twitter,
       instagram:
-        profileLoading || !profile.social ? '' : profile.social.instagram,
+        profileLoading || !profile?.social ? '' : profile.social.instagram,
       linkedin:
-        profileLoading || !profile.social ? '' : profile.social.linkedin,
+        profileLoading || !profile?.social ? '' : profile.social.linkedin,
     });
   }, [profileLoading]);
 
