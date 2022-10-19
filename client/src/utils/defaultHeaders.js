@@ -1,3 +1,3 @@
 export const defaultHeaders = {
-    headers: { "Content-Type": "application/json" }
-}
+  headers: { 'Content-Type': 'application/json' },
+};

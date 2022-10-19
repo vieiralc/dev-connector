@@ -8,6 +8,7 @@ const profileService = require('../../../services/profile/profileService')
 
 const Profile = require('../../../models/Profile')
 const User = require('../../../models/User')
+const Post = require('../../../models/Post')
 
 const { 
     STATUS_400,
@@ -210,10 +211,11 @@ router.delete('/education/:education_id', auth_middleware, async (req, res) => {
 })
 
 // @router  DELETE api/profile/
-// @dsc     Delete user and profile
+// @dsc     Delete profile, user and profile
 // @access  Private
 router.delete('/', auth_middleware, async (req, res) => {
     try {
+        await Post.deleteMany({ user: req.user.id })
         await Profile.findOneAndRemove({ user: req.user.id })
         await User.findOneAndRemove({ _id: req.user.id })
         
