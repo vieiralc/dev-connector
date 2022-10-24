@@ -5,7 +5,7 @@ export function getProfiles() {
   return async function getProfiles(dispatch, getState) {
     dispatch(clearProfile());
     try {
-      const response = await axios.get('api/profile');
+      const response = await axios.get('api/profile/all');
       dispatch(updateProfiles(response.data));
     } catch (err) {
       dispatch(

@@ -6,6 +6,7 @@ import CreateProfile from '../profile-forms/UpdateProfile';
 import UpdateProfile from '../profile-forms/UpdateProfile';
 import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
+import Profiles from '../profiles/Profiles';
 
 export const ROUTES = [
   {
@@ -56,4 +57,10 @@ export const ROUTES = [
     private: true,
     component: <AddEducation />,
   },
+  {
+    key: 'profiles',
+    path: '/profiles',
+    private: false,
+    component: <Profiles />,
+  }
 ];
