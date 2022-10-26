@@ -7,6 +7,7 @@ import UpdateProfile from '../profile-forms/UpdateProfile';
 import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
 import Profiles from '../profiles/Profiles';
+import Profile from '../profile/Profile';
 
 export const ROUTES = [
   {
@@ -62,5 +63,11 @@ export const ROUTES = [
     path: '/profiles',
     private: false,
     component: <Profiles />,
+  },
+  {
+    key: 'profile_page',
+    path: '/profile/:id',
+    private: false,
+    component: <Profile />,
   }
 ];
