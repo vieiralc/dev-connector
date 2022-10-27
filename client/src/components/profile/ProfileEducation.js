@@ -2,7 +2,6 @@ import Moment from 'react-moment';
 import { DATE_FORMAT } from '../../constants/constants';
 
 const ProfileEducation = ({ educationArray }) => {
-    console.log(educationArray)
     return (
         <section className="profile-edu bg-white p-2">
             <h2 className="text-primary">Education</h2>

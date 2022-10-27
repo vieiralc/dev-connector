@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
-import { updateProfile, updateProfiles, profileError, clearProfile } from '../../reducers/profileSlice';
+import { updateProfile, updateProfiles, updateRepos, profileError, clearProfile } from '../../reducers/profileSlice';
 
 export function getProfiles() {
   return async function getProfiles(dispatch, getState) {
@@ -38,8 +38,8 @@ export function getProfileById(userId) {
 export function getGithubRepos(githubUsername) {
     return async function getGithubRepos(dispatch, getState) {
       try {
-        const response = await axios.get(`api/profile/github/${githubUsername}`);
-        dispatch(updateProfile(response.data));
+        const response = await axios.get(`/api/profile/github/${githubUsername}`);
+        dispatch(updateRepos(response.data));
       } catch (err) {
         dispatch(
           profileError({
