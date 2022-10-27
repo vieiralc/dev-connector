@@ -1,5 +1,3 @@
-import isEmpty from '../../validation/is-empty';
-
 const ProfileAbout = ({
   profile: {
     bio,
@@ -8,7 +6,7 @@ const ProfileAbout = ({
   }
 }) => {
     return (
-      <div className="profile-about bg-light p-2">
+      <section className="profile-about bg-light p-2">
           {
             bio && (
               <>
@@ -28,7 +26,7 @@ const ProfileAbout = ({
               ))
             }
           </div>
-      </div>
+      </section>
     )
 }
 
