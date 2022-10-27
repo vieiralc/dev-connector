@@ -1,6 +1,7 @@
 import Moment from 'react-moment';
 import { useDispatch } from 'react-redux';
 import { deleteEducation } from '../../redux/actions/profile/deleteEducation';
+import { DATE_FORMAT } from '../../constants/constants';
 
 const Education = ({ educationArray }) => {
 
@@ -11,8 +12,8 @@ const Education = ({ educationArray }) => {
             <td>{edu.school}</td>
             <td className="hide-sm">{edu.degree}</td>
             <td className="hide-sm">
-                <Moment date={edu.from} format="YYYY/MM/DD"/> - {
-                    edu.to === '' ? (' Now') : (<Moment date={edu.to} format="YYYY/MM/DD"/>)
+                <Moment date={edu.from} format={DATE_FORMAT}/> - {
+                    edu.to === '' ? (' Now') : (<Moment date={edu.to} format={DATE_FORMAT}/>)
                 }
             </td>
             <td>

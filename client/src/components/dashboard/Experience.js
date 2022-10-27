@@ -1,6 +1,7 @@
 import Moment from 'react-moment';
 import { useDispatch } from 'react-redux';
 import { deleteExperience } from '../../redux/actions/profile/deleteExperience';
+import { DATE_FORMAT } from '../../constants/constants';
 
 const Experience = ({ experiences }) => {
 
@@ -10,8 +11,8 @@ const Experience = ({ experiences }) => {
             <td>{exp.company}</td>
             <td className="hide-sm">{exp.title}</td>
             <td className="hide-sm">
-                <Moment date={exp.from} format="YYYY/MM/DD"/> - {
-                    exp.to === '' ? (' Now') : (<Moment date={exp.to} format="YYYY/MM/DD"/>)
+                <Moment date={exp.from} format={DATE_FORMAT}/> - {
+                    exp.to === '' ? (' Now') : (<Moment date={exp.to} format={DATE_FORMAT}/>)
                 }
             </td>
             <td>
