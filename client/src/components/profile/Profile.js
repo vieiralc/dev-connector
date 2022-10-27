@@ -5,6 +5,8 @@ import Spinner from '../layout/Spinner';
 import { getProfileById } from '../../redux/actions/profile/getProfiles';
 import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
+import ProfileExperience from './ProfileExperience';
+import ProfileEducation from './ProfileEducation';
 
 const Profile = () => {
 
@@ -35,6 +37,8 @@ const Profile = () => {
             <div className='profile-grid my-1'>
                 <ProfileTop profile={profile}/>
                 <ProfileAbout profile={profile}/>
+                <ProfileExperience experiences={profile.experience}/>
+                <ProfileEducation educationArray={profile.education}/>
             </div>
         </div>
     )
