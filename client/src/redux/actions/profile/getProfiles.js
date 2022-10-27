@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { updateProfile, updateProfiles, profileError, clearProfile } from '../../reducers/profileSlice';
+import { defaultHeaders } from '../../../utils/defaultHeaders';
+import { updateProfile, updateProfiles, updateRepos, profileError, clearProfile } from '../../reducers/profileSlice';
 
 export function getProfiles() {
   return async function getProfiles(dispatch, getState) {
     dispatch(clearProfile());
     try {
-      const response = await axios.get('api/profile');
+      const response = await axios.get('api/profile/all');
       dispatch(updateProfiles(response.data));
     } catch (err) {
       dispatch(
@@ -21,7 +22,7 @@ export function getProfiles() {
 export function getProfileById(userId) {
     return async function getProfileById(dispatch, getState) {
       try {
-        const response = await axios.get(`api/profile/user/${userId}`);
+        const response = await axios.get(`/api/profile/user/${userId}`, defaultHeaders);
         dispatch(updateProfile(response.data));
       } catch (err) {
         dispatch(
@@ -37,8 +38,8 @@ export function getProfileById(userId) {
 export function getGithubRepos(githubUsername) {
     return async function getGithubRepos(dispatch, getState) {
       try {
-        const response = await axios.get(`api/profile/github/${githubUsername}`);
-        dispatch(updateProfile(response.data));
+        const response = await axios.get(`/api/profile/github/${githubUsername}`);
+        dispatch(updateRepos(response.data));
       } catch (err) {
         dispatch(
           profileError({
