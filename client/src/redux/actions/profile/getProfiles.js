@@ -22,7 +22,7 @@ export function getProfiles() {
 export function getProfileById(userId) {
     return async function getProfileById(dispatch, getState) {
       try {
-        const response = await axios.get(`api/profile/user/${userId}`, defaultHeaders);
+        const response = await axios.get(`/api/profile/user/${userId}`, defaultHeaders);
         dispatch(updateProfile(response.data));
       } catch (err) {
         dispatch(
