@@ -7,6 +7,7 @@ import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
 import ProfileEducation from './ProfileEducation';
+import ProfileGithub from './ProfileGithub';
 
 const Profile = () => {
 
@@ -39,6 +40,11 @@ const Profile = () => {
                 <ProfileAbout profile={profile}/>
                 <ProfileExperience experiences={profile.experience}/>
                 <ProfileEducation educationArray={profile.education}/>
+                {
+                    profile.githubusername && (
+                        <ProfileGithub username={profile.githubusername}/>
+                    )
+                }
             </div>
         </div>
     )
