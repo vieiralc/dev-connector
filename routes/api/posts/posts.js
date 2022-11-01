@@ -96,11 +96,13 @@ router.delete('/:id', auth_middleware, async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
-      return res.status(STATUS_404).json({ msg: NO_POST_FOUND });
+      return res.status(STATUS_404).json({ errors: [{ msg: NO_POST_FOUND }] });
     }
 
     if (post.user.toString() !== req.user.id) {
-      return res.status(STATUS_401).json({ msg: USER_NOT_AUTHORIZED });
+      return res
+        .status(STATUS_401)
+        .json({ errors: [{ msg: USER_NOT_AUTHORIZED }] });
     }
 
     await post.remove();
@@ -124,7 +126,7 @@ router.put('/like/:id', auth_middleware, async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(STATUS_404).json({ msg: NO_POST_FOUND });
+      return res.status(STATUS_404).json({ errors: [{ msg: NO_POST_FOUND }] });
     }
 
     const authenticatedUserId = req.user.id;
@@ -159,7 +161,7 @@ router.put('/unlike/:id', auth_middleware, async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(STATUS_404).json({ msg: NO_POST_FOUND });
+      return res.status(STATUS_404).json({ errors: [{ msg: NO_POST_FOUND }] });
     }
 
     const authenticatedUserId = req.user.id;
