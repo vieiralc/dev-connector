@@ -3,24 +3,13 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { DATE_FORMAT } from '../../constants/constants';
 import { likePostAction, removeLike } from '../../redux/actions/post/post';
+import { deletePost } from '../../redux/actions/post/deletePost';
 
 const PostItem = ({
   post: { _id, text, name, avatar, user, likes, comments, date },
 }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-
-  const likePost = (postId) => {
-    dispatch(likePostAction(postId));
-  };
-
-  const unlikePost = (postId) => {
-    dispatch(removeLike(postId));
-  };
-
-  const deletePost = () => {
-    console.log('deleting post...');
-  };
 
   return (
     <div className='post bg-white p-1 my-1'>
@@ -37,7 +26,7 @@ const PostItem = ({
         </p>
         <button
           type='button'
-          onClick={() => likePost(_id)}
+          onClick={() => dispatch(likePostAction(_id))}
           className='btn btn-light'
         >
           <i className='fas fa-thumbs-up'></i>{' '}
@@ -45,7 +34,7 @@ const PostItem = ({
         </button>
         <button
           type='button'
-          onClick={() => unlikePost(_id)}
+          onClick={() => dispatch(removeLike(_id))}
           className='btn btn-light'
         >
           <i className='fas fa-thumbs-down'></i>
@@ -59,7 +48,7 @@ const PostItem = ({
         {!auth.loading && user === auth.user._id ? (
           <button
             type='button'
-            onClick={() => deletePost()}
+            onClick={() => dispatch(deletePost(_id))}
             className='btn btn-danger'
           >
             <i className='fas fa-times'></i>
