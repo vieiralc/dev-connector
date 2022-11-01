@@ -13,6 +13,11 @@ export const postSlice = createSlice({
       state.posts = payload;
       state.loading = false;
     },
+    updatePostLikes: (state, { payload: { postId, likes } }) => {
+      state.posts = state.posts.map((post) =>
+        post._id === postId ? { ...post, likes: likes } : { ...post }
+      );
+    },
     postError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
@@ -20,6 +25,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const { postsAdded, postError } = postSlice.actions;
+export const { postsAdded, updatePostLikes, postError } = postSlice.actions;
 
 export default postSlice.reducer;

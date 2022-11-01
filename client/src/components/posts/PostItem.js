@@ -2,11 +2,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { DATE_FORMAT } from '../../constants/constants';
+import { likePostAction, removeLike } from '../../redux/actions/post/post';
 
 const PostItem = ({
   post: { _id, text, name, avatar, user, likes, comments, date },
 }) => {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+
+  const likePost = (postId) => {
+    dispatch(likePostAction(postId));
+  };
 
   const deletePost = () => {
     console.log('deleting post...');
@@ -25,7 +31,11 @@ const PostItem = ({
         <p className='post-date'>
           Posted on <Moment format={DATE_FORMAT} date={date} />
         </p>
-        <button type='button' className='btn btn-light'>
+        <button
+          type='button'
+          onClick={() => likePost(_id)}
+          className='btn btn-light'
+        >
           <i className='fas fa-thumbs-up'></i>{' '}
           {likes.length > 0 ? <span>{likes.length}</span> : null}
         </button>
