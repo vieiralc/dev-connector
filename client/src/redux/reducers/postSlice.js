@@ -13,6 +13,9 @@ export const postSlice = createSlice({
       state.posts = payload;
       state.loading = false;
     },
+    newPostAdded: (state, { payload }) => {
+      state.posts.unshift(payload);
+    },
     updatePostLikes: (state, { payload: { postId, likes } }) => {
       state.posts = state.posts.map((post) =>
         post._id === postId ? { ...post, likes: likes } : { ...post }
@@ -28,7 +31,12 @@ export const postSlice = createSlice({
   },
 });
 
-export const { postsAdded, updatePostLikes, postDeleted, postError } =
-  postSlice.actions;
+export const {
+  postsAdded,
+  newPostAdded,
+  updatePostLikes,
+  postDeleted,
+  postError,
+} = postSlice.actions;
 
 export default postSlice.reducer;
