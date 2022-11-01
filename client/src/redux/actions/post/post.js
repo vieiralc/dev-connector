@@ -47,6 +47,13 @@ export const removeLike = (postId) => async (dispatch) => {
     const response = await axios.put(`/api/posts/unlike/${postId}`);
     dispatch(updatePostLikes({ postId, likes: response.data }));
   } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => {
+        dispatch(setAlert({ message: error.msg, alertType: 'danger' }));
+      });
+    }
+
     dispatch(
       postError({
         msg: err.response.statusText,

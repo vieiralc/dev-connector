@@ -14,6 +14,10 @@ const PostItem = ({
     dispatch(likePostAction(postId));
   };
 
+  const unlikePost = (postId) => {
+    dispatch(removeLike(postId));
+  };
+
   const deletePost = () => {
     console.log('deleting post...');
   };
@@ -39,7 +43,11 @@ const PostItem = ({
           <i className='fas fa-thumbs-up'></i>{' '}
           {likes.length > 0 ? <span>{likes.length}</span> : null}
         </button>
-        <button type='button' className='btn btn-light'>
+        <button
+          type='button'
+          onClick={() => unlikePost(_id)}
+          className='btn btn-light'
+        >
           <i className='fas fa-thumbs-down'></i>
         </button>
         <Link to={`/post/${_id}`} className='btn btn-primary'>

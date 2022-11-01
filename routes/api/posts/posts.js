@@ -168,7 +168,9 @@ router.put('/unlike/:id', auth_middleware, async (req, res) => {
         .length > 0;
 
     if (!hasAuthenticatedUserLikedPost) {
-      return res.status(STATUS_400).json({ msg: USER_HAS_NOT_LIKED_POST_YET });
+      return res
+        .status(STATUS_400)
+        .json({ errors: [{ msg: USER_HAS_NOT_LIKED_POST_YET }] });
     }
 
     const likesArray = post.likes.map((like) => like.user.toString());
