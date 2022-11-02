@@ -15,6 +15,7 @@ export const postSlice = createSlice({
     },
     newPostAdded: (state, { payload }) => {
       state.posts.unshift(payload);
+      state.loading = false;
     },
     updatePostLikes: (state, { payload: { postId, likes } }) => {
       state.posts = state.posts.map((post) =>

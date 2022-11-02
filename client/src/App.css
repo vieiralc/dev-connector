@@ -163,7 +163,7 @@ img {
 }
 
 .btn-primary,
-.bg-primary,
+.my-bg-primary,
 .badge-primary,
 .alert-primary {
   background: var(--primary-color);
