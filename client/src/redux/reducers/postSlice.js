@@ -17,6 +17,10 @@ export const postSlice = createSlice({
       state.posts.unshift(payload);
       state.loading = false;
     },
+    postFetchedById: (state, { payload }) => {
+      state.post = payload;
+      state.loading = false;
+    },
     updatePostLikes: (state, { payload: { postId, likes } }) => {
       state.posts = state.posts.map((post) =>
         post._id === postId ? { ...post, likes: likes } : { ...post }
@@ -35,6 +39,7 @@ export const postSlice = createSlice({
 export const {
   postsAdded,
   newPostAdded,
+  postFetchedById,
   updatePostLikes,
   postDeleted,
   postError,
