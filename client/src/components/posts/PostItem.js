@@ -7,6 +7,7 @@ import { deletePost } from '../../redux/actions/post/deletePost';
 
 const PostItem = ({
   post: { _id, text, name, avatar, user, likes, comments, date },
+  showActions = true,
 }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -24,35 +25,39 @@ const PostItem = ({
         <p className='post-date'>
           Posted on <Moment format={DATE_FORMAT} date={date} />
         </p>
-        <button
-          type='button'
-          onClick={() => dispatch(likePostAction(_id))}
-          className='btn btn-light'
-        >
-          <i className='fas fa-thumbs-up'></i>{' '}
-          {likes.length > 0 ? <span>{likes.length}</span> : null}
-        </button>
-        <button
-          type='button'
-          onClick={() => dispatch(removeLike(_id))}
-          className='btn btn-light'
-        >
-          <i className='fas fa-thumbs-down'></i>
-        </button>
-        <Link to={`/post/${_id}`} className='btn btn-primary'>
-          Discussion{' '}
-          {comments.length > 0 ? (
-            <span className='comment-count'>{comments.length}</span>
-          ) : null}
-        </Link>
-        {!auth.loading && user === auth.user._id ? (
-          <button
-            type='button'
-            onClick={() => dispatch(deletePost(_id))}
-            className='btn btn-danger'
-          >
-            <i className='fas fa-times'></i>
-          </button>
+        {showActions ? (
+          <>
+            <button
+              type='button'
+              onClick={() => dispatch(likePostAction(_id))}
+              className='btn btn-light'
+            >
+              <i className='fas fa-thumbs-up'></i>{' '}
+              {likes.length > 0 ? <span>{likes.length}</span> : null}
+            </button>
+            <button
+              type='button'
+              onClick={() => dispatch(removeLike(_id))}
+              className='btn btn-light'
+            >
+              <i className='fas fa-thumbs-down'></i>
+            </button>
+            <Link to={`/post/${_id}`} className='btn btn-primary'>
+              Discussion{' '}
+              {comments.length > 0 ? (
+                <span className='comment-count'>{comments.length}</span>
+              ) : null}
+            </Link>
+            {!auth.loading && user === auth.user._id ? (
+              <button
+                type='button'
+                onClick={() => dispatch(deletePost(_id))}
+                className='btn btn-danger'
+              >
+                <i className='fas fa-times'></i>
+              </button>
+            ) : null}
+          </>
         ) : null}
       </div>
     </div>
