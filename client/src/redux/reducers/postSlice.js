@@ -29,6 +29,16 @@ export const postSlice = createSlice({
     postDeleted: (state, { payload: { postId } }) => {
       state.posts = state.posts.filter((post) => post._id !== postId);
     },
+    commentAdded: (state, { payload }) => {
+      state.post.comments = payload;
+      state.loading = false;
+    },
+    removeComment: (state, { payload: { commentId } }) => {
+      state.post.comments = state.post.comments.filter(
+        (comment) => comment._id !== commentId
+      );
+      state.loading = false;
+    },
     postError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
@@ -42,6 +52,8 @@ export const {
   postFetchedById,
   updatePostLikes,
   postDeleted,
+  commentAdded,
+  removeComment,
   postError,
 } = postSlice.actions;
 
