@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   const deleteMyAccount = () => {
     dispatch(deleteAccount());
-  }
+  };
 
   return loading && profile === null ? (
     <Spinner />
@@ -32,17 +32,20 @@ const Dashboard = () => {
       </p>
       {profile !== null ? (
         <>
-          <DashboardActions /> 
-          <Experience experiences={profile.experience}/>
-          <Education educationArray={profile.education}/>
-          
+          <DashboardActions />
+          <Experience experiences={profile.experience} />
+          <Education educationArray={profile.education} />
+
           <div className='my-2'>
-            <button className='btn btn-danger' onClick={() => deleteMyAccount()}>
+            <button
+              className='btn btn-danger'
+              onClick={() => deleteMyAccount()}
+            >
               <i className='fas fa-user-minus'></i> &nbsp; Delete My Account
             </button>
           </div>
         </>
-      ): (
+      ) : (
         <>
           <p>You have not setup a profile, please add some info</p>
           <Link to='/create-profile' className='btn btn-primary my-1'>

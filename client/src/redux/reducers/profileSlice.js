@@ -35,7 +35,12 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { updateProfile, updateProfiles, updateRepos, profileError, clearProfile } =
-  profileSlice.actions;
+export const {
+  updateProfile,
+  updateProfiles,
+  updateRepos,
+  profileError,
+  clearProfile,
+} = profileSlice.actions;
 
 export default profileSlice.reducer;

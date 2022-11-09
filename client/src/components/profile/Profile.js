@@ -10,44 +10,43 @@ import ProfileEducation from './ProfileEducation';
 import ProfileGithub from './ProfileGithub';
 
 const Profile = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile.profile);
+  const loading = useSelector((state) => state.profile.loading);
+  const auth = useSelector((state) => state.auth);
 
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const profile = useSelector(state => state.profile.profile);
-    const loading = useSelector(state => state.profile.loading);
-    const auth = useSelector(state => state.auth);
+  useEffect(() => {
+    dispatch(getProfileById(id));
+  }, []);
 
-    useEffect(() => {
-        dispatch(getProfileById(id));
-    }, [])
+  if (profile === null || loading) {
+    return <Spinner />;
+  }
 
-    if (profile === null || loading) {
-        return <Spinner/>
-    }
-
-    return (
-        <div className='container'>
-            <Link to='/profiles' className='btn btn-light'>Back to Profiles</Link>
-            {
-                auth.isAuthenticated && 
-                !auth.loading && 
-                auth.user?._id === profile?.user?._id && (
-                    <Link to='/update-profile' className='btn btn-dark'>Edit Profile</Link>
-                )
-            }
-            <div className='profile-grid my-1'>
-                <ProfileTop profile={profile}/>
-                <ProfileAbout profile={profile}/>
-                <ProfileExperience experiences={profile.experience}/>
-                <ProfileEducation educationArray={profile.education}/>
-                {
-                    profile.githubusername && (
-                        <ProfileGithub username={profile.githubusername}/>
-                    )
-                }
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className='container'>
+      <Link to='/profiles' className='btn btn-light'>
+        Back to Profiles
+      </Link>
+      {auth.isAuthenticated &&
+        !auth.loading &&
+        auth.user?._id === profile?.user?._id && (
+          <Link to='/update-profile' className='btn btn-dark'>
+            Edit Profile
+          </Link>
+        )}
+      <div className='profile-grid my-1'>
+        <ProfileTop profile={profile} />
+        <ProfileAbout profile={profile} />
+        <ProfileExperience experiences={profile.experience} />
+        <ProfileEducation educationArray={profile.education} />
+        {profile.githubusername && (
+          <ProfileGithub username={profile.githubusername} />
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Profile;
