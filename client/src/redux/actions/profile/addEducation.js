@@ -4,7 +4,7 @@ import { setAlert } from '../../reducers/alertSlice';
 import { updateProfile } from '../../reducers/profileSlice';
 
 export function addEducation(formData, navigate) {
-  return async function addExperience(dispatch, getState) {
+  return async function addEducation(dispatch, getState) {
     try {
       const response = await axios.put(
         'api/profile/education',

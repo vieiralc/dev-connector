@@ -1,50 +1,37 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts } from '../../redux/actions/post/post';
+import Spinner from '../layout/Spinner';
+import PostItem from './PostItem';
 import PostForm from './PostForm';
-import Spinner from '../common/Spinner';
-import { getPosts } from '../../actions/postActions';
-import PostFeed from './PostFeed';
 
-class Posts extends Component {
+const Posts = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post.posts);
+  const loading = useSelector((state) => state.post.loading);
 
-    componentDidMount() {
-        this.props.getPosts();
-    }
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
 
-    render() {
+  if (loading) {
+    return <Spinner />;
+  }
 
-        const { posts, loading } = this.props.post;
-        let postContent;
+  return (
+    <div className='container'>
+      <h1 className='large text-primary'>Posts</h1>
+      <p className='leading'>
+        <i className='fas fa-user'></i> Welcome to the community
+      </p>
+      <PostForm />
+      <div className='posts'>
+        {posts.map((post) => (
+          <PostItem key={post._id} post={post} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-        if (posts === null || loading) {
-            postContent = <Spinner/>
-        } else {
-            postContent = <PostFeed posts={posts}/>
-        }
-
-        return (
-            <div className="feed">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <PostForm/>
-                            {postContent}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
-
-Posts.propTypes = {
-    getPosts: PropTypes.func.isRequired,
-    post: PropTypes.object.isRequired
-}
-
-const mapStateToProps = state => ({
-    post: state.post
-});
-
-export default connect(mapStateToProps, { getPosts })(Posts);
+export default Posts;

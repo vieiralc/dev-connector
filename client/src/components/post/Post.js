@@ -1,60 +1,40 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Spinner from '../common/Spinner';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../layout/Spinner';
+import { getPost } from '../../redux/actions/post/getPost';
+import { Link, useParams } from 'react-router-dom';
 import PostItem from '../posts/PostItem';
 import CommentForm from './CommentForm';
-import { getPost } from '../../actions/postActions';
-import { Link } from 'react-router-dom';
-import CommentFeed from './CommentFeed';
+import CommentItem from './CommentItem';
 
-class Post extends Component {
+const Post = () => {
+  const { postId } = useParams();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.post.loading);
+  const post = useSelector((state) => state.post.post);
 
-    componentDidMount() {
-        this.props.getPost(this.props.match.params.id)
-    }
+  useEffect(() => {
+    dispatch(getPost(postId));
+  }, []);
 
-    render() {
+  if (post === null || loading) {
+    return <Spinner />;
+  }
 
-        const { post, loading } = this.props.post;
-        let postContent;
+  return (
+    <div className='container'>
+      <Link to='/posts' className='btn'>
+        Back To Posts
+      </Link>
+      <PostItem post={post} showActions={false} />
+      <CommentForm postId={post._id} />
+      <div className='comments'>
+        {post.comments.map((comment) => (
+          <CommentItem key={comment._id} comment={comment} postId={post._id} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-        if (post === null || loading || Object.keys(post).length === 0) {
-            postContent = <Spinner/>
-        } else {
-            postContent = (
-                <div>
-                    <PostItem post={post} showActions={false}/>
-                    <CommentForm postId={post._id} />
-                    <CommentFeed postId={post._id} comments={post.comments} />
-                </div>
-            );
-        }
-
-        return (
-            <div className="post">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <Link to="/feed" className="btn btn-light mb-3"> 
-                                Back to Feed
-                            </Link>
-                            {postContent}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
-
-Post.propTypes = {
-    getPost: PropTypes.func.isRequired,
-    post: PropTypes.object.isRequired 
-}
-
-const mapStateToProps = state => ({
-    post: state.post
-})
-
-export default connect(mapStateToProps, { getPost })(Post);
+export default Post;

@@ -1,58 +1,41 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { deleteComment } from '../../actions/postActions';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
+import { DATE_FORMAT } from '../../constants/constants';
+import { deleteComment } from '../../redux/actions/post/deleteComment';
 
-class CommentItem extends Component {
-    
-    onDeleteClick(postId, commentId) {
-        this.props.deleteComment(postId, commentId);
-    }
+const CommentItem = ({
+  postId,
+  comment: { _id, text, name, avatar, user, date },
+}) => {
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
 
-    render() {
-
-        const { comment, postId, auth } = this.props;  
-
-        return (
-            <div className="card card-body mb-3">
-                <div className="row">
-                    <div className="col-md-2">
-                        <a href="profile.html">
-                            <img 
-                                className="rounded-circle d-none d-md-block" 
-                                src={comment.avatar} 
-                                alt="" 
-                            />
-                        </a>
-                        <br />
-                        <p className="text-center">{comment.name}</p>
-                    </div>
-                
-                    <div className="col-md-10">
-                        <p className="lead">{comment.text}</p>
-                        {comment.user === auth.user.id ? (
-                                <button onClick={this.onDeleteClick.bind(this, postId, comment._id)} 
-                                    type="button" 
-                                    className="btn btn-danger mr-1"> 
-                                        <i className="fas fa-times" />
-                                </button>
-                        ):null}
-                    </div>
-                </div>
-            </div>
-        )
-    };
+  return (
+    <div className='post bg-white p-1 my-1'>
+      <div>
+        <Link to={`/profile/${user}`}>
+          <img className='round-img' src={avatar} alt='User profile picture' />
+          <h4>{name}</h4>
+        </Link>
+      </div>
+      <div>
+        <p className='my-1'>{text}</p>
+        <p className='post-date'>
+          Posted on <Moment date={date} format={DATE_FORMAT} />
+        </p>
+        {!authState.loading && user === authState.user._id ? (
+          <button
+            onClick={() => dispatch(deleteComment(postId, _id))}
+            type='button'
+            className='btn btn-danger'
+          >
+            <i className='fas fa-times'></i> Delete Comment
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
 };
 
-CommentItem.propTypes = {
-    deleteCommmet: PropTypes.func.isRequired,
-    comment: PropTypes.object.isRequired,
-    postId: PropTypes.string.isRequired,
-    auth: PropTypes.object.isRequired
-}
-
-const mapStateToProps = state => ({
-    auth: state.auth
-});
-
-export default connect(mapStateToProps, { deleteComment })(CommentItem);
+export default CommentItem;
