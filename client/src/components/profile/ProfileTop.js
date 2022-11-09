@@ -9,7 +9,7 @@ const ProfileTop = ({
   },
 }) => {
   return (
-    <section className='profile-top bg-primary p-2'>
+    <section className='profile-top my-bg-primary p-2'>
       <img className='round-img my-1' src={avatar} alt='User profile picture' />
       <h1 className='large'>{name}</h1>
       <p className='lead'>{company ? `${status} at ${company}` : { status }}</p>
