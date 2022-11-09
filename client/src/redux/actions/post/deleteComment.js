@@ -4,9 +4,7 @@ import { setAlert } from '../../reducers/alertSlice';
 
 export const deleteComment = (postId, commentId) => async (dispatch) => {
   try {
-    const response = await axios.delete(
-      `/api/posts/comment/${postId}/${commentId}`
-    );
+    await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
     dispatch(removeComment({ commentId }));
     dispatch(
       setAlert({

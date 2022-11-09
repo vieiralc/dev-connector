@@ -39,6 +39,9 @@ export const postSlice = createSlice({
       );
       state.loading = false;
     },
+    setPostSliceLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
     postError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
@@ -54,6 +57,7 @@ export const {
   postDeleted,
   commentAdded,
   removeComment,
+  setPostSliceLoading,
   postError,
 } = postSlice.actions;
 

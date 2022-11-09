@@ -1,9 +1,14 @@
 import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
-import { postFetchedById, postError } from '../../reducers/postSlice';
+import {
+  setPostSliceLoading,
+  postFetchedById,
+  postError,
+} from '../../reducers/postSlice';
 
 export const getPost = (postId) => async (dispatch) => {
   try {
+    dispatch(setPostSliceLoading(true));
     const response = await axios.get(`/api/posts/${postId}`, defaultHeaders);
     dispatch(postFetchedById(response.data));
   } catch (err) {
