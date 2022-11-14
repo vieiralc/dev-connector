@@ -44,6 +44,14 @@ img {
   margin-bottom: 3rem;
 }
 
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15rem;
+}
+
 .alert-container {
   margin-top: 6rem;
   padding: 0 2rem;
