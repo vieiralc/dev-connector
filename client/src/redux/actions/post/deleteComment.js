@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { removeComment, postError } from '../../reducers/postSlice';
 import { setAlert } from '../../reducers/alertSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export const deleteComment = (postId, commentId) => async (dispatch) => {
   try {
-    await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
+    await axios.delete(`${API_BASE_URL}/posts/comment/${postId}/${commentId}`);
     dispatch(removeComment({ commentId }));
     dispatch(
       setAlert({

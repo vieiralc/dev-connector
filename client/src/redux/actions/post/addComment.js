@@ -2,11 +2,12 @@ import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { commentAdded, postError } from '../../reducers/postSlice';
 import { setAlert } from '../../reducers/alertSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export const addComment = (postId, formData) => async (dispatch) => {
   try {
     const response = await axios.put(
-      `/api/posts/comment/${postId}`,
+      `${API_BASE_URL}/posts/comment/${postId}`,
       formData,
       defaultHeaders
     );

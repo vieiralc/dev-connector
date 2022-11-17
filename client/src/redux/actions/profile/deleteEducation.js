@@ -2,12 +2,13 @@ import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { setAlert } from '../../reducers/alertSlice';
 import { updateProfile } from '../../reducers/profileSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export function deleteEducation(education_id) {
   return async function deleteEducation(dispatch, getState) {
     try {
       const response = await axios.delete(
-        `api/profile/education/${education_id}`,
+        `${API_BASE_URL}/profile/education/${education_id}`,
         defaultHeaders
       );
       dispatch(updateProfile(response.data));

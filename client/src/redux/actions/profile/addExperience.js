@@ -2,12 +2,13 @@ import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { setAlert } from '../../reducers/alertSlice';
 import { updateProfile } from '../../reducers/profileSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export function addExperience(formData, navigate) {
   return async function addExperience(dispatch, getState) {
     try {
       const response = await axios.put(
-        'api/profile/experience',
+        `${API_BASE_URL}/profile/experience`,
         formData,
         defaultHeaders
       );

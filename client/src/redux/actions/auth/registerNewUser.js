@@ -3,6 +3,7 @@ import { authSuccess, clearUserData } from '../../reducers/authSlice';
 import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { loadUser } from './loadUser';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export function registerNewUser(newUserData) {
   return async function registerNewUser(dispatch, getState) {
@@ -10,7 +11,7 @@ export function registerNewUser(newUserData) {
 
     try {
       const response = await axios.post(
-        'api/users/register',
+        `${API_BASE_URL}/users/register`,
         body,
         defaultHeaders
       );

@@ -3,13 +3,18 @@ import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { loadUser } from './loadUser';
 import { authSuccess, clearUserData } from '../../reducers/authSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export function loginUser(email, password) {
   return async function loginUser(dispatch, getState) {
     const body = JSON.stringify({ email, password });
 
     try {
-      const response = await axios.post('api/auth', body, defaultHeaders);
+      const response = await axios.post(
+        `${API_BASE_URL}/auth`,
+        body,
+        defaultHeaders
+      );
       dispatch(authSuccess(response.data));
       dispatch(loadUser());
     } catch (err) {
