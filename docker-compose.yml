@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  react-app:
+    image: react-app
+    build: ./client
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - dev-connector
+    depends_on:
+      - api-server
+  api-server:
+    image: api-server
+    build: ./
+    ports:
+      - "5000:5000"
+    networks:
+      - dev-connector
+
+networks:
+  dev-connector:
+    driver: bridge

@@ -5,6 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
+    "env-cmd": "^10.1.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,12 +19,11 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.development react-scripts start",
+    "build:production": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000",
   "browserslist": {
     "production": [
       ">0.2%",
