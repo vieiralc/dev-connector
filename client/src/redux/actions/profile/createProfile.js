@@ -2,12 +2,13 @@ import axios from 'axios';
 import { defaultHeaders } from '../../../utils/defaultHeaders';
 import { setAlert } from '../../reducers/alertSlice';
 import { updateProfile, profileError } from '../../reducers/profileSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export function createProfile(formData, navigate, updatingProfile = false) {
   return async function createProfile(dispatch, getState) {
     try {
       const response = await axios.post(
-        'api/profile',
+        `${API_BASE_URL}/profile`,
         formData,
         defaultHeaders
       );

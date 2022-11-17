@@ -6,10 +6,11 @@ import {
   postError,
 } from '../../reducers/postSlice';
 import { setAlert } from '../../reducers/alertSlice';
+import { API_BASE_URL } from '../../../constants/constants';
 
 export const getPosts = () => async (dispatch) => {
   try {
-    const response = await axios.get('/api/posts', defaultHeaders);
+    const response = await axios.get(`${API_BASE_URL}/posts`, defaultHeaders);
     dispatch(postsAdded(response.data));
   } catch (err) {
     dispatch(
@@ -23,7 +24,7 @@ export const getPosts = () => async (dispatch) => {
 
 export const likePostAction = (postId) => async (dispatch) => {
   try {
-    const response = await axios.put(`/api/posts/like/${postId}`);
+    const response = await axios.put(`${API_BASE_URL}/posts/like/${postId}`);
     dispatch(updatePostLikes({ postId, likes: response.data }));
   } catch (err) {
     const errors = err.response.data.errors;
@@ -44,7 +45,7 @@ export const likePostAction = (postId) => async (dispatch) => {
 
 export const removeLike = (postId) => async (dispatch) => {
   try {
-    const response = await axios.put(`/api/posts/unlike/${postId}`);
+    const response = await axios.put(`${API_BASE_URL}/posts/unlike/${postId}`);
     dispatch(updatePostLikes({ postId, likes: response.data }));
   } catch (err) {
     const errors = err.response.data.errors;

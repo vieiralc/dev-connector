@@ -6,7 +6,15 @@ const posts = require('./routes/api/posts/posts');
 const auth = require('./routes/api/auth/auth');
 const app = express();
 const { SERVER_PORT } = require('./commons/constants');
+const cors = require('cors');
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ extended: false }));
 
 db.getDBConnection();

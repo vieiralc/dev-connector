@@ -1,5 +1,6 @@
 import { userLoaded, clearUserData } from '../../reducers/authSlice';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../constants/constants';
 import setAuthToken from '../../../utils/setAuthToken';
 
 export function loadUser() {
@@ -9,7 +10,7 @@ export function loadUser() {
     }
 
     try {
-      const response = await axios.get('api/auth');
+      const response = await axios.get(`${API_BASE_URL}/auth`);
 
       dispatch(userLoaded({ user: response.data }));
     } catch (err) {
