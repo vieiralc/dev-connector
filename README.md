@@ -8,4 +8,4 @@
 
 <p> Backend unit tests coverage: </p>
 
-![alt text](https://github.com/vieiralc/dev-connector/blob/prod/img/coverage.png)
+![alt text](https://github.com/vieiralc/dev-connector/blob/main/img/coverage.png)
