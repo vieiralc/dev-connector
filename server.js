@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path')
+
 const db = require('./config/db');
 const users = require('./routes/api/users/users');
 const profile = require('./routes/api/profile/profile');
